@@ -2,7 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include
+#include <QFileDialog>
+#include <QDebug>
+#include <QMessageBox>
+#include <QtXml>
+#include <iostream>
+#include <memory>
 
 namespace Ui {
 class MainWindow;
@@ -17,10 +22,17 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_excelBtn_released();
+    void on_excelPathBtn_released();
+    void on_xmlPathBtn_released();
+    void on_searchPathBtn_clicked();
+    void on_convertButton_released();
 
 private:
     Ui::MainWindow *ui;
+    QXmlStreamWriter xml;
+    void createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml);
+    bool createXML();
+    QXmlStreamWriter * xmlWriter;
 };
 
 #endif // MAINWINDOW_H
