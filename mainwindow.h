@@ -32,6 +32,8 @@ private slots:
     void on_addItemToListWidget(QString itemName, bool isFound);
     void on_processingFinished(bool isSuccess, QString information);
 
+    void on_fitBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
     QThread * finderThread{nullptr};

@@ -11,9 +11,9 @@
 #include <QMetaType>
 #include <QString>
 #include <QFile>
-#include "partinfo.h"
 #include <memory>
 #include <utility>
+#include "partinfo.h"
 
 class PartInfo;
 
