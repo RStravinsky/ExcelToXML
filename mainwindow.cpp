@@ -171,12 +171,11 @@ void MainWindow::on_setValue(int value, QString labelText)
 
 void MainWindow::on_addItemToListWidget(QString itemName, bool isFound)
 {
-    QListWidgetItem * item{nullptr};
-    if(isFound) item = new QListWidgetItem(QIcon(":/images/images/found.png"), itemName);
-    else item = new QListWidgetItem(QIcon(":/images/images/notfound.png"), itemName);
+    QListWidgetItem * item = new QListWidgetItem(itemName);
 
     item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
     item->setCheckState(Qt::Unchecked);
+    if(!isFound) item->setForeground(QBrush(QColor(Qt::red)));
 
     ui->listWidget->insertItem(0,item);
 }
@@ -200,8 +199,8 @@ void MainWindow::on_processingFinished(bool isSuccess, QString information)
         }
     }
 
-//    if(ui->listWidget->count() != 0)
-//        sortListWidget();
+    if(ui->listWidget->count() != 0)
+       ui->listWidget->sortItems(Qt::AscendingOrder);
 }
 
 void MainWindow::fillMachines()
@@ -233,4 +232,21 @@ QStringList MainWindow::getItemsFromFile(QString fileName)
     }
 
     return list;
+}
+
+void MainWindow::on_fitBtn_clicked()
+{
+
+    bool isChecked = false;
+    for(int i=0;i<ui->listWidget->count();++i) {
+        if(ui->listWidget->item(i)->checkState()) {
+            isChecked = true;
+            ui->listWidget->item(i)->setIcon(QIcon(":/images/images/found.png"));
+        }
+        ui->listWidget->item(i)->setCheckState(Qt::Unchecked);
+    }
+
+    if(!isChecked)
+        QMessageBox::information(this, tr("Informacja"), QString("Nie zaznaczono."));
+
 }
