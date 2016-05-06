@@ -8,9 +8,19 @@ void Finder::abort()
 
 void Finder::showPartList()
 {
+    qDebug() << "------------------------PART LIST---------------------------";
     for(auto elem : m_partList) {
         qDebug() << elem->getDrawingNumber() << " - " << elem->getMaterial() << " - " << elem->getThickness() << " - " << elem->getFilePath() << endl;
     }
+    qDebug() << "------------------------END PART LIST---------------------------";
+}
+
+void Finder::sortPartList()
+{
+    qSort(m_partList.begin(), m_partList.end(),
+          [](PartInfo * part1, PartInfo * part2) {
+                return (part1->getDrawingNumber() < part2->getDrawingNumber());
+            });
 }
 
 void Finder::loadFileList()
@@ -44,6 +54,8 @@ void Finder::loadFileList()
         emit signalProgress(int((double(row)/double(lastRow)*100))+1, "Tworzenie listy części ...");
     }
 
+    sortPartList();
+    showPartList();
     emit finished(true); // success
 }
 
