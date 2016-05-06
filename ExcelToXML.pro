@@ -10,11 +10,16 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = ExcelToXML
 TEMPLATE = app
+CONFIG += c++11
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    finder.cpp \
+    partinfo.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    finder.h \
+    partinfo.h
 
 FORMS    += mainwindow.ui

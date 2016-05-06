@@ -19,6 +19,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
 
@@ -32,6 +33,8 @@ public:
     QLineEdit *xmlPathLe;
     QPushButton *excelBtn;
     QPushButton *xmlBtn;
+    QTextEdit *partTextEdit;
+    QPushButton *loadListButton;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -40,7 +43,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(615, 135);
+        MainWindow->resize(634, 400);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         excelPathLe = new QLineEdit(centralWidget);
@@ -55,10 +58,16 @@ public:
         xmlBtn = new QPushButton(centralWidget);
         xmlBtn->setObjectName(QStringLiteral("xmlBtn"));
         xmlBtn->setGeometry(QRect(550, 50, 61, 31));
+        partTextEdit = new QTextEdit(centralWidget);
+        partTextEdit->setObjectName(QStringLiteral("partTextEdit"));
+        partTextEdit->setGeometry(QRect(40, 110, 501, 201));
+        loadListButton = new QPushButton(centralWidget);
+        loadListButton->setObjectName(QStringLiteral("loadListButton"));
+        loadListButton->setGeometry(QRect(550, 110, 61, 51));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 615, 21));
+        menuBar->setGeometry(QRect(0, 0, 634, 20));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -77,6 +86,7 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
         excelBtn->setText(QApplication::translate("MainWindow", "...", 0));
         xmlBtn->setText(QApplication::translate("MainWindow", "...", 0));
+        loadListButton->setText(QApplication::translate("MainWindow", "Load list", 0));
     } // retranslateUi
 
 };

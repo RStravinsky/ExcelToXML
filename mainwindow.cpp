@@ -15,5 +15,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_excelBtn_released()
 {
+    ui->excelPathLe->setText(QFileDialog::getOpenFileName(this, tr("Wybierz harmonogram"), tr(""), tr("Pliki XLSX (*.xlsx)")));
+}
+
+void MainWindow::on_loadListButton_released()
+{
+    Finder f(this, ui->excelPathLe->text());
+
+    f.loadFileList();
+    f.showPartList();
 
 }

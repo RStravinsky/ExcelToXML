@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>615</width>
-    <height>135</height>
+    <width>634</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -60,14 +60,37 @@
      <string>...</string>
     </property>
    </widget>
+   <widget class="QTextEdit" name="partTextEdit">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>110</y>
+      <width>501</width>
+      <height>201</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="loadListButton">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>110</y>
+      <width>61</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Load list</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>615</width>
-     <height>21</height>
+     <width>634</width>
+     <height>20</height>
     </rect>
    </property>
   </widget>

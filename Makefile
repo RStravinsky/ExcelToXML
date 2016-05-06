@@ -180,6 +180,7 @@ Makefile: ExcelToXML.pro C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/win32-g++/qmake.c
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/resolve_config.prf \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/exclusive_builds_post.prf \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/default_post.prf \
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/c++11.prf \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/win32/rtti.prf \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/precompile_header.prf \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/warn_on.prf \
@@ -195,6 +196,7 @@ Makefile: ExcelToXML.pro C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/win32-g++/qmake.c
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/lex.prf \
 		ExcelToXML.pro \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/lib/qtmaind.prl \
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/lib/Qt5Xlsx.prl \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/lib/Qt5Widgets.prl \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/lib/Qt5Gui.prl \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/lib/Qt5Core.prl
@@ -320,6 +322,7 @@ C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/win32/default_pre.prf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/resolve_config.prf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/exclusive_builds_post.prf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/default_post.prf:
+C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/c++11.prf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/win32/rtti.prf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/precompile_header.prf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/warn_on.prf:
@@ -335,6 +338,7 @@ C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/yacc.prf:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/features/lex.prf:
 ExcelToXML.pro:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/lib/qtmaind.prl:
+C:/Qt/Qt5.5.1/5.5/mingw492_32/lib/Qt5Xlsx.prl:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/lib/Qt5Widgets.prl:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/lib/Qt5Gui.prl:
 C:/Qt/Qt5.5.1/5.5/mingw492_32/lib/Qt5Core.prl:
