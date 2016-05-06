@@ -7,7 +7,10 @@
 #include <QMessageBox>
 #include <QtXml>
 #include <memory>
+#include <QThread>
 #include "finder.h"
+
+
 
 namespace Ui {
 class MainWindow;
@@ -31,6 +34,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QThread finderThread;
     QXmlStreamWriter xml;
     QString schedulePath;
     void createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml);
