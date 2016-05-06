@@ -58,12 +58,16 @@ void MainWindow::on_convertButton_released()
         return;
     }
     else {
-
+        if(createXML()){
+            QMessageBox::information(this, tr("Informacja"), QString("Wygenerowano plik XML."));
+        }
     }
 }
 
-void MainWindow::createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml)
+void MainWindow::createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartInfo * partInfo)
 {
+    qDebug() << "Drawing number: " << partInfo->getDrawingNumber() << endl;
+
     QStringList TblRef(QStringList() << "PRODUCTS" << "PRODUCT OPERATIONS" << "IMPORTGEO" << "MANUFACTURING");
     QStringList FldRefFirst(QStringList()  << "PrdRef" << "PrdRef" << "Product");
     QStringList FldRefSecond(QStringList() << "MatRef" << "WrkRef" << "GeometryType");
@@ -87,14 +91,14 @@ void MainWindow::createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml)
         // second line
         xml->writeStartElement("Field");
         xml->writeAttribute("FldRef",FldRefSecond[i]);
-        xml->writeAttribute("FldValue",(i==0) ? "S235JR" : (i==1 ? "Eckert" : "DXF")); // i=0 - TYPE , i=1 - MACHINE, i=2 = "DXF"
+        xml->writeAttribute("FldValue",(i==0) ? partInfo->getMaterial() : (i==1 ? "Eckert" : "DXF")); // i=0 - TYPE , i=1 - MACHINE, i=2 = "DXF"
         xml->writeAttribute("FldType","20");
         xml->writeEndElement();
 
         // third line
         xml->writeStartElement("Field");
         xml->writeAttribute("FldRef",FldRefThird[i]);
-        xml->writeAttribute("FldValue",(i==0) ? "35" : (i==1 ? "2D Cut" : "C:\DXF\100761.dxf")); // i=0 - HEIGHT , i=1 - "2D CUT", i=2 = DXF PATH
+        xml->writeAttribute("FldValue",(i==0) ? QString::number(partInfo->getThickness()) : (i==1 ? "2D Cut" : partInfo->getDrawingNumber())); // i=0 - HEIGHT , i=1 - "2D CUT", i=2 = DXF PATH
         xml->writeAttribute("FldType",(i==0) ? "100": "20");
         xml->writeEndElement();
 
@@ -120,7 +124,7 @@ bool MainWindow::createXML()
 {
     QFile file(ui->xmlPathLe->text());
     if (!file.open(QFile::WriteOnly | QFile::Text)) {
-        QMessageBox::information(this, tr("Informacja"), QString("Nie można otworzyć pliku XML."));
+        QMessageBox::warning(this, tr("Uwaga"), QString("Nie można otworzyć pliku XML."));
         return false;
     }
 
@@ -130,14 +134,15 @@ bool MainWindow::createXML()
     xmlWriter->writeStartDocument();
     xmlWriter->writeStartElement("DATAEX");
 
-    createCommandTag(xmlWriter);
+    //for(int i=0; i<finder->getPartList().size(); ++i)
+    //    createCommandTag(xmlWriter, finder->getPartList().at(i));
 
     xmlWriter->writeEndElement(); // Dataex
     xmlWriter->writeEndDocument();
 
     file.close();
     if (file.error()) {
-        QMessageBox::information(this, tr("Informacja"), QString("Nie można otworzyć pliku XML."));
+        QMessageBox::warning(this, tr("Uwaga"), QString("Nie można otworzyć pliku XML."));
         return false;
     }
 
@@ -236,17 +241,16 @@ QStringList MainWindow::getItemsFromFile(QString fileName)
 
 void MainWindow::on_fitBtn_clicked()
 {
-
     bool isChecked = false;
     for(int i=0;i<ui->listWidget->count();++i) {
         if(ui->listWidget->item(i)->checkState()) {
             isChecked = true;
             ui->listWidget->item(i)->setIcon(QIcon(":/images/images/found.png"));
+            // TODO
         }
         ui->listWidget->item(i)->setCheckState(Qt::Unchecked);
     }
 
     if(!isChecked)
-        QMessageBox::information(this, tr("Informacja"), QString("Nie zaznaczono."));
-
+        QMessageBox::information(this, tr("Informacja"), QString("Nie zaznaczono wierszy."));
 }

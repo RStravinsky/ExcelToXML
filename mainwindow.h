@@ -31,7 +31,6 @@ private slots:
     void on_setValue(int value, QString labelText);
     void on_addItemToListWidget(QString itemName, bool isFound);
     void on_processingFinished(bool isSuccess, QString information);
-
     void on_fitBtn_clicked();
 
 private:
@@ -40,7 +39,7 @@ private:
     Finder * finder{nullptr};
     QXmlStreamWriter xml;
     QString schedulePath;
-    void createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml);
+    void createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartInfo * partInfo);
     bool createXML();
     QXmlStreamWriter * xmlWriter;
     void fillMachines();
