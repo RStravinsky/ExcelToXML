@@ -12,7 +12,7 @@
   <COMMAND Name="Import" TblRef="IMPORTGEO">
 	<FIELD FldRef="Product" FldValue="Indeks_detalu" FldType="20"/>
 	<FIELD FldRef="GeometryType" FldValue="DXF" FldType="20"/>
-	<FIELD FldRef="GeometryPath" FldValue="C:\DXF\100761.dxf" FldType="20"/>
+	<FIELD FldRef="GeometryPath" FldValue="C:DXF100761.dxf" FldType="20"/>
   </COMMAND>
   <COMMAND Name="Import" TblRef="MANUFACTURING">
     <FIELD FldRef="MnOID" FldValue="ZP000001" FldType="20"/>

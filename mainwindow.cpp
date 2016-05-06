@@ -15,20 +15,27 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_excelPathBtn_released()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,tr("Wybierz harmonogram"), QDir::currentPath(), tr("Excel (*.xlsx)"));
-    ui->excelPathLe->setText(fileName);
+    QString path = QFileDialog::getOpenFileName(this,tr("Wybierz harmonogram"), QDir::currentPath(), tr("Excel (*.xlsx)"));
+    qDebug() << "Path: " << path << endl;
+    qDebug() << "schedulePath: " << schedulePath << endl;
+
+    if(!path.isEmpty()) {
+        qDebug() << "BYYYDE" << endl;
+        schedulePath = path;
+        ui->excelPathLe->setText(path);
+    }
 }
 
 void MainWindow::on_xmlPathBtn_released()
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Zapisz plik XML"), QDir::currentPath(), tr("XML (*.xml)"));
-    ui->xmlPathLe->setText(fileName);
+    if(!fileName.isEmpty()) ui->xmlPathLe->setText(fileName);
 }
 
 void MainWindow::on_searchPathBtn_clicked()
 {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Wybierz ścieżkę wyszukiwania"), "//k1/Produkcja/TECHNOLODZY/BAZA DO TXT/txt", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    ui->excelPathLe->setText(dir);
+    if(!dir.isEmpty()) ui->excelPathLe->setText(dir);
 }
 
 void MainWindow::on_convertButton_released()
@@ -147,4 +154,58 @@ bool MainWindow::createXML()
     }
 
     return true;
+}
+
+void MainWindow::fillMoreCb(bool isType)
+{
+    QStringList list;
+
+    if(isType)
+        list = getItemsFromFile("TYPES.txt");
+    else
+        list = getItemsFromFile("MACHINERY.txt");
+
+    ui->moreCb->clear();
+    ui->moreCb->addItems(list);
+}
+
+QStringList MainWindow::getItemsFromFile(QString fileName)
+{
+    QStringList list;
+    QFile file(QDir::currentPath() + "\\" + fileName);
+    if ( file.open(QIODevice::ReadWrite) ) {
+        QString line;
+        QTextStream t( &file );
+        do {
+            line = t.readLine();
+            if(!line.isEmpty())
+                list.append(line);
+         } while (!line.isNull());
+        file.close();
+    }
+
+    else {
+        QMessageBox::warning(this, tr("Uwaga"), QString("Nie można otworzyć pliku z danymi."));
+        return QStringList();
+    }
+
+    return list;
+}
+
+void MainWindow::on_excelPathLe_textChanged(const QString &arg1)
+{
+    ui->fitBtn->setEnabled(!arg1.isEmpty());
+    ui->moreCb->setEnabled(!arg1.isEmpty());
+    ui->typeCb->setEnabled(!arg1.isEmpty());
+}
+
+void MainWindow::on_typeCb_currentIndexChanged(const QString &arg1)
+{
+    if(arg1 == "Gatunek")
+        fillMoreCb(true);
+    else if(arg1 == "Maszyna")
+        fillMoreCb(false);
+    else {
+        ui->moreCb->clear();
+    }
 }

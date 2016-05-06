@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
@@ -50,10 +51,12 @@ public:
     QLabel *logoLabel;
     QLabel *nameLabel;
     QLabel *descriptionLabel;
-    QLabel *magnifierLbl;
     QProgressBar *progressBar;
     QPushButton *convertButton;
     QListWidget *listWidget;
+    QComboBox *typeCb;
+    QComboBox *moreCb;
+    QPushButton *fitBtn;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -107,6 +110,60 @@ public:
 ""));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
+        centralWidget->setStyleSheet(QLatin1String("QComboBox {\n"
+"	border: 1px solid lightgray;\n"
+"	border-radius: 5px;\n"
+"	padding: 1px 18px 1px 3px;\n"
+"	min-width: 6em;\n"
+"	color: \"gray\";\n"
+"	background-color: \"white\";\n"
+"	margin: 0 0 0 0;\n"
+"}\n"
+"\n"
+"QComboBox:editable {\n"
+"	background: \"green\"}\n"
+"	QComboBox:!editable {\n"
+"	background: \"white\"\n"
+"}\n"
+"\n"
+"QComboBox:hover {\n"
+"	background: \"lightgray\";\n"
+"	color: \"white\";\n"
+"}\n"
+"\n"
+"QComboBox:on{\n"
+"	padding-top: 3px;\n"
+"	padding-left: 4px;\n"
+"	background-color:#A9A9A9 ;\n"
+"}\n"
+"\n"
+"QComboBox::drop-down{\n"
+"	subcontrol-origin: padding;\n"
+"	subcontrol-position: center right;\n"
+"	width: 50px;\n"
+"	height: 50px;\n"
+"	border-width: 0px;\n"
+"}\n"
+"\n"
+"QComboBox::down-arrow{\n"
+"	image: url(:/images/images/arrow.png);\n"
+"	height: 70px;\n"
+"	width:  70px;\n"
+"}\n"
+"\n"
+"QComboBox::down-arrow:on{\n"
+"	top: 1px;\n"
+"	left: 1px;\n"
+"}\n"
+"\n"
+"QComboBox QListView{\n"
+"	border-width: 1px;\n"
+"	border-color: darkgray;\n"
+"	border-style: solid;\n"
+"	color: gray;\n"
+"	backgrou"
+                        "nd-color: white;\n"
+"}"));
         bottomFrame = new QFrame(centralWidget);
         bottomFrame->setObjectName(QStringLiteral("bottomFrame"));
         bottomFrame->setGeometry(QRect(0, 420, 621, 101));
@@ -386,12 +443,6 @@ public:
         font3.setBold(false);
         font3.setWeight(50);
         descriptionLabel->setFont(font3);
-        magnifierLbl = new QLabel(centralWidget);
-        magnifierLbl->setObjectName(QStringLiteral("magnifierLbl"));
-        magnifierLbl->setGeometry(QRect(210, 150, 151, 151));
-        magnifierLbl->setStyleSheet(QStringLiteral(""));
-        magnifierLbl->setPixmap(QPixmap(QString::fromUtf8(":/images/images/magnifier.png")));
-        magnifierLbl->setScaledContents(true);
         progressBar = new QProgressBar(centralWidget);
         progressBar->setObjectName(QStringLiteral("progressBar"));
         progressBar->setGeometry(QRect(10, 350, 451, 31));
@@ -447,10 +498,58 @@ public:
         convertButton->setIconSize(QSize(30, 30));
         listWidget = new QListWidget(centralWidget);
         listWidget->setObjectName(QStringLiteral("listWidget"));
-        listWidget->setGeometry(QRect(10, 110, 601, 231));
+        listWidget->setGeometry(QRect(10, 150, 601, 191));
         listWidget->setStyleSheet(QStringLiteral(""));
         listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         listWidget->setAlternatingRowColors(true);
+        typeCb = new QComboBox(centralWidget);
+        typeCb->setObjectName(QStringLiteral("typeCb"));
+        typeCb->setEnabled(false);
+        typeCb->setGeometry(QRect(10, 110, 191, 31));
+        QFont font5;
+        font5.setFamily(QStringLiteral("Calibri"));
+        font5.setPointSize(12);
+        typeCb->setFont(font5);
+        typeCb->setStyleSheet(QLatin1String("        QComboBox QListView{\n"
+"        border-width: 3px;\n"
+"        border-color: darkgray;\n"
+"        border-style: solid;\n"
+"        color: white;\n"
+"        background-color: qlineargradient(x1:0, y1:0, x2:1,y2:0, stop: 1 rgb(140, 140, 140), stop: 0 rgb(150, 150, 150));}"));
+        moreCb = new QComboBox(centralWidget);
+        moreCb->setObjectName(QStringLiteral("moreCb"));
+        moreCb->setEnabled(false);
+        moreCb->setGeometry(QRect(210, 110, 181, 31));
+        moreCb->setFont(font5);
+        fitBtn = new QPushButton(centralWidget);
+        fitBtn->setObjectName(QStringLiteral("fitBtn"));
+        fitBtn->setEnabled(false);
+        fitBtn->setGeometry(QRect(400, 110, 211, 31));
+        QFont font6;
+        font6.setFamily(QStringLiteral("Calibri"));
+        font6.setPointSize(12);
+        font6.setBold(false);
+        font6.setWeight(50);
+        fitBtn->setFont(font6);
+        fitBtn->setStyleSheet(QLatin1String("QPushButton {\n"
+"color: \"gray\";\n"
+"border-radius: 5px;\n"
+"border: 1px solid lightgray;\n"
+"background: \"white\";\n"
+"min-width: 80px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background: \"lightgray\";\n"
+"color: \"white\";\n"
+"width: 300px;\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"border: 1px solid \"gray\";\n"
+"background: #A9A9A9 ;\n"
+"}\n"
+""));
         MainWindow->setCentralWidget(centralWidget);
 
         retranslateUi(MainWindow);
@@ -505,8 +604,14 @@ public:
         logoLabel->setText(QString());
         nameLabel->setText(QString());
         descriptionLabel->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:8pt; color:#ffffff;\">Konwersja do formatu XML</span></p></body></html>", 0));
-        magnifierLbl->setText(QString());
         convertButton->setText(QApplication::translate("MainWindow", "Konwertuj", 0));
+        typeCb->clear();
+        typeCb->insertItems(0, QStringList()
+         << QApplication::translate("MainWindow", "Wybierz", 0)
+         << QApplication::translate("MainWindow", "Gatunek", 0)
+         << QApplication::translate("MainWindow", "Maszyna", 0)
+        );
+        fitBtn->setText(QApplication::translate("MainWindow", "Przyporz\304\205dkuj", 0));
     } // retranslateUi
 
 };
