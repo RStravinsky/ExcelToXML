@@ -1,0 +1,26 @@
+<DATAEX>
+  <COMMAND Name="Import" TblRef="PRODUCTS">
+    <FIELD FldRef="PrdRef" FldValue="Indeks_detalu" FldType="20" />
+    <FIELD FldRef="MatRef" FldValue="S235JR" FldType="20" />
+    <FIELD FldRef="Height" FldValue="35" FldType="100" />
+  </COMMAND>
+  <COMMAND Name="Import" TblRef="PRODUCT OPERATIONS">
+    <FIELD FldRef="PrdRef" FldValue="Indeks_detalu" FldType="20" />
+    <FIELD FldRef="WrkRef" FldValue="Eckert" FldType="20" />
+    <FIELD FldRef="OprRef" FldValue="2D Cut" FldType="20" />
+  </COMMAND>
+  <COMMAND Name="Import" TblRef="IMPORTGEO">
+	<FIELD FldRef="Product" FldValue="Indeks_detalu" FldType="20"/>
+	<FIELD FldRef="GeometryType" FldValue="DXF" FldType="20"/>
+	<FIELD FldRef="GeometryPath" FldValue="C:DXF100761.dxf" FldType="20"/>
+  </COMMAND>
+  <COMMAND Name="Import" TblRef="MANUFACTURING">
+    <FIELD FldRef="MnOID" FldValue="ZP000001" FldType="20"/>
+    <FIELD FldRef="PrdRefDst" FldValue="Indeks_detalu" FldType="20" />
+    <FIELD FldRef="Descrip" FldValue="Opis" FldType="20" />
+    <FIELD FldRef="OrdRef" FldValue="Nazwa zamówienia" FldType="20"/>    
+    <FIELD FldRef="ComName" FldValue="Nazwa klienta" FldType="20" />
+    <FIELD FldRef="RQ" FldValue="12" FldType="30" />
+    <FIELD FldRef="DDate" FldValue="20161018" FldType="120" />
+  </COMMAND> 
+</DATAEX>

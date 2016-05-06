@@ -6,105 +6,902 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>634</width>
-    <height>400</height>
+    <width>621</width>
+    <height>521</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>XML Converter</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/images/images/icon.ico</normaloff>:/images/images/icon.ico</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QListWidget {
+  background-color: &quot;white&quot;;
+  font-size: 10pt;
+  color: &quot;gray&quot;;
+  font-size: 9pt;
+  font-family: &quot;Arial&quot;;
+  border-radius: 5px;
+  border-width: 2px solid lightgray;
+}
+
+#centralWidget QScrollBar:vertical {
+  border: none;
+  background: &quot;transparent&quot;;
+  width: 15px;
+  margin: 20px 0px 20px 0px;
+}
+
+#centralWidget QScrollBar::handle:vertical {
+  background: &quot;lightgray&quot;;
+  min-height: 20px;
+  border-radius: 2px;
+}
+
+#centralWidget QScrollBar::add-line:vertical {
+  image: url(:/images/images/downArrow.png);
+  background: &quot;lightgray&quot;;
+  height: 15px;
+  subcontrol-position: bottom;
+  subcontrol-origin: margin;
+  border-radius: 2px;
+}
+
+#centralWidget QScrollBar::sub-line:vertical {
+  image: url(:/images/images/upArrow.png);
+  background: &quot;lightgray&quot;;
+  height: 15px;
+  subcontrol-position: top;
+  subcontrol-origin: margin;
+  border-radius: 2px;
+}
+</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLineEdit" name="excelPathLe">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>531</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="xmlPathLe">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>531</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="excelBtn">
-    <property name="geometry">
-     <rect>
-      <x>550</x>
-      <y>10</y>
-      <width>61</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>...</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="xmlBtn">
-    <property name="geometry">
-     <rect>
-      <x>550</x>
-      <y>50</y>
-      <width>61</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>...</string>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="partTextEdit">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>110</y>
-      <width>501</width>
-      <height>201</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="loadListButton">
-    <property name="geometry">
-     <rect>
-      <x>550</x>
-      <y>110</y>
-      <width>61</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Load list</string>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>634</width>
-     <height>20</height>
-    </rect>
+   <property name="styleSheet">
+    <string notr="true">QComboBox {
+	border: 1px solid lightgray;
+	border-radius: 5px;
+	padding: 1px 18px 1px 3px;
+	min-width: 6em;
+	color: &quot;gray&quot;;
+	background-color: &quot;white&quot;;
+	margin: 0 0 0 0;
+}
+
+QComboBox:editable {
+	background: &quot;green&quot;}
+	QComboBox:!editable {
+	background: &quot;white&quot;
+}
+
+QComboBox:hover {
+	background: &quot;lightgray&quot;;
+	color: &quot;white&quot;;
+}
+
+QComboBox:on{
+	padding-top: 3px;
+	padding-left: 4px;
+	background-color:#A9A9A9 ;
+}
+
+QComboBox::drop-down{
+	subcontrol-origin: padding;
+	subcontrol-position: center right;
+	width: 50px;
+	height: 50px;
+	border-width: 0px;
+}
+
+QComboBox::down-arrow{
+	image: url(:/images/images/arrow.png);
+	height: 70px;
+	width:  70px;
+}
+
+QComboBox::down-arrow:on{
+	top: 1px;
+	left: 1px;
+}
+
+QComboBox QListView{
+	border-width: 1px;
+	border-color: darkgray;
+	border-style: solid;
+	color: gray;
+	background-color: white;
+}</string>
    </property>
+   <widget class="QFrame" name="bottomFrame">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>420</y>
+      <width>621</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#bottomFrame {
+border: none;
+background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+stop: 0 #a6a6a6, stop: 0.08 #7f7f7f,
+stop: 0.49999 #717171);
+border-top-right-radius: 10px;
+border-top-left-radius:10px;
+}
+</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QWidget" name="layoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>8</y>
+       <width>591</width>
+       <height>83</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="inputLayout">
+        <item>
+         <widget class="QLabel" name="excelLbl">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>135</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>9</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Scieżka przeszukiwania plików *.PDF</string>
+          </property>
+          <property name="toolTipDuration">
+           <number>-1</number>
+          </property>
+          <property name="whatsThis">
+           <string/>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Scieżka do harmonogramu:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="excelPathLe">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="toolTipDuration">
+           <number>-1</number>
+          </property>
+          <property name="statusTip">
+           <string/>
+          </property>
+          <property name="whatsThis">
+           <string/>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLineEdit {
+    font-size: 9pt; 
+    color: &quot;gray&quot;;
+    font-family: &quot;Arial&quot;;
+	border-radius: 5px;
+    border-width: 2px solid lightgray;
+}</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="frame">
+           <bool>true</bool>
+          </property>
+          <property name="readOnly">
+           <bool>false</bool>
+          </property>
+          <property name="placeholderText">
+           <string notr="true"/>
+          </property>
+          <property name="clearButtonEnabled">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="excelPathBtn">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>30</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>30</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+color: &quot;gray&quot;;
+border: 1px solid lightgray;
+border-radius: 5px;
+background: &quot;white&quot;;
+}
+
+QPushButton:hover {
+background: &quot;lightgray&quot;;
+color: &quot;white&quot;;
+}
+
+QPushButton:pressed {
+border: 1px solid &quot;gray&quot;;
+background: #A9A9A9 ;
+}
+</string>
+          </property>
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="outputLayout">
+        <item>
+         <widget class="QLabel" name="xmlLbl">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>156</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>9</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Ścieżka zapisu wyszukanych plików *.PDF</string>
+          </property>
+          <property name="whatsThis">
+           <string/>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Ścieżka do pliku XML:                                 &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="xmlPathLe">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+          <property name="whatsThis">
+           <string/>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLineEdit {
+    font-size: 9pt; 
+    color: &quot;gray&quot;;
+    font-family: &quot;Arial&quot;;
+	border-radius: 5px;
+    border-width: 2px solid lightgray;
+}</string>
+          </property>
+          <property name="readOnly">
+           <bool>false</bool>
+          </property>
+          <property name="clearButtonEnabled">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="xmlPathBtn">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>30</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>30</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+color: &quot;gray&quot;;
+border: 1px solid lightgray;
+border-radius: 5px;
+background: &quot;white&quot;;
+}
+
+QPushButton:hover {
+background: &quot;lightgray&quot;;
+color: &quot;white&quot;;
+}
+
+QPushButton:pressed {
+border: 1px solid &quot;gray&quot;;
+background: #A9A9A9 ;
+}</string>
+          </property>
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="outputLayout_3">
+        <item>
+         <widget class="QLabel" name="searchLbl">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>156</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>9</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Ścieżka zapisu wyszukanych plików *.PDF</string>
+          </property>
+          <property name="whatsThis">
+           <string/>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Ścieżka wyszukiwania:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="searchPathLe">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+          <property name="whatsThis">
+           <string/>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLineEdit {
+    font-size: 9pt; 
+    color: &quot;gray&quot;;
+    font-family: &quot;Arial&quot;;
+	border-radius: 5px;
+    border-width: 2px solid lightgray;
+}</string>
+          </property>
+          <property name="text">
+           <string>//k1/Produkcja/TECHNOLODZY/BAZA DO TXT/txt</string>
+          </property>
+          <property name="readOnly">
+           <bool>false</bool>
+          </property>
+          <property name="clearButtonEnabled">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="searchPathBtn">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>30</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>30</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+color: &quot;gray&quot;;
+border: 1px solid lightgray;
+border-radius: 5px;
+background: &quot;white&quot;;
+}
+
+QPushButton:hover {
+background: &quot;lightgray&quot;;
+color: &quot;white&quot;;
+}
+
+QPushButton:pressed {
+border: 1px solid &quot;gray&quot;;
+background: #A9A9A9 ;
+}</string>
+          </property>
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="topFrame">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>621</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#topFrame {
+border: none;
+background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+stop: 0 #a6a6a6, stop: 0.08 #7f7f7f,
+stop: 0.39999 #717171, stop: 0.4 #626262,
+stop: 0.9 #4c4c4c, stop: 1 #333333);
+border-bottom-right-radius: 10px;
+border-bottom-left-radius:10px;
+}
+
+#topFrame QPushButton {
+color: #333;
+border: 2px solid #555;
+border-radius: 11px;
+padding: 5px;
+background: qradialgradient(cx: 0.3, cy: -0.4,
+fx: 0.3, fy: -0.4,
+radius: 1.35, stop: 0 #fff, stop: 1 #888);
+}
+
+#topFrame QPushButton:hover {
+background: qradialgradient(cx: 0.3, cy: -0.4,
+fx: 0.3, fy: -0.4,
+radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
+}
+
+#topFrame QPushButton:pressed {
+background: qradialgradient(cx: 0.4, cy: -0.1,
+fx: 0.4, fy: -0.1,
+radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="logoLabel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>0</y>
+       <width>101</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="resources.qrc">:/images/images/icon.ico</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="nameLabel">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>15</y>
+       <width>251</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>36</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="resources.qrc">:/images/images/name.png</pixmap>
+     </property>
+    </widget>
+    <widget class="QLabel" name="descriptionLabel">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>55</y>
+       <width>291</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>4</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt; color:#ffffff;&quot;&gt;Konwersja do formatu XML&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>350</y>
+      <width>451</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777211</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QProgressBar {
+border: 1px solid lightgray;
+border-radius: 5px;
+padding: 1px;
+color: &quot;white&quot;;
+}
+
+QProgressBar::chunk {
+background: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1,
+stop: 0 #06A6DA, 
+stop: 0.5 #1E90FF ,
+stop: 1 #238 );
+border-radius: 3px;
+border: 1px solid black;
+}</string>
+    </property>
+    <property name="value">
+     <number>0</number>
+    </property>
+    <property name="textVisible">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="convertButton">
+    <property name="geometry">
+     <rect>
+      <x>468</x>
+      <y>350</y>
+      <width>141</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>11</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+color: &quot;gray&quot;;
+border-radius: 5px;
+border: 1px solid lightgray;
+background: &quot;white&quot;;
+min-width: 80px;
+}
+
+QPushButton:hover {
+background: &quot;lightgray&quot;;
+color: &quot;white&quot;;
+width: 300px;
+}
+
+QPushButton:pressed {
+border: 1px solid &quot;gray&quot;;
+background: #A9A9A9 ;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Konwertuj</string>
+    </property>
+    <property name="icon">
+     <iconset resource="resources.qrc">
+      <normaloff>:/images/images/convert.png</normaloff>:/images/images/convert.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>30</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="listWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>150</y>
+      <width>601</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAsNeeded</enum>
+    </property>
+    <property name="alternatingRowColors">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="typeCb">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>191</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">        QComboBox QListView{
+        border-width: 3px;
+        border-color: darkgray;
+        border-style: solid;
+        color: white;
+        background-color: qlineargradient(x1:0, y1:0, x2:1,y2:0, stop: 1 rgb(140, 140, 140), stop: 0 rgb(150, 150, 150));}</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>Wybierz</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Gatunek</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Maszyna</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QComboBox" name="moreCb">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>110</y>
+      <width>181</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="fitBtn">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>110</y>
+      <width>211</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+color: &quot;gray&quot;;
+border-radius: 5px;
+border: 1px solid lightgray;
+background: &quot;white&quot;;
+min-width: 80px;
+}
+
+QPushButton:hover {
+background: &quot;lightgray&quot;;
+color: &quot;white&quot;;
+width: 300px;
+}
+
+QPushButton:pressed {
+border: 1px solid &quot;gray&quot;;
+background: #A9A9A9 ;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Przyporządkuj</string>
+    </property>
+   </widget>
   </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-  </widget>
-  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
