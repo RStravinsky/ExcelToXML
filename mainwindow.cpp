@@ -84,21 +84,21 @@ void MainWindow::createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartIn
         // first line
         xml->writeStartElement("Field");
         xml->writeAttribute("FldRef",FldRefFirst[i]);
-        xml->writeAttribute("FldValue","Indeks_detalu"); // drawing number ALWAYS
+        xml->writeAttribute("FldValue", partInfo->getDrawingNumber()); // drawing number ALWAYS
         xml->writeAttribute("FldType", "20");
         xml->writeEndElement();
 
         // second line
         xml->writeStartElement("Field");
         xml->writeAttribute("FldRef",FldRefSecond[i]);
-        xml->writeAttribute("FldValue",(i==0) ? partInfo->getMaterial() : (i==1 ? "Eckert" : "DXF")); // i=0 - TYPE , i=1 - MACHINE, i=2 = "DXF"
+        xml->writeAttribute("FldValue",(i==0) ? partInfo->getMaterial() : (i==1 ? partInfo->getMachine() : "DXF")); // i=0 - TYPE , i=1 - MACHINE, i=2 = "DXF"
         xml->writeAttribute("FldType","20");
         xml->writeEndElement();
 
         // third line
         xml->writeStartElement("Field");
         xml->writeAttribute("FldRef",FldRefThird[i]);
-        xml->writeAttribute("FldValue",(i==0) ? QString::number(partInfo->getThickness()) : (i==1 ? "2D Cut" : partInfo->getDrawingNumber())); // i=0 - HEIGHT , i=1 - "2D CUT", i=2 = DXF PATH
+        xml->writeAttribute("FldValue",(i==0) ? QString::number(partInfo->getThickness()) : (i==1 ? "2D Cut" : partInfo->getFilePath())); // i=0 - HEIGHT , i=1 - "2D CUT", i=2 = DXF PATH
         xml->writeAttribute("FldType",(i==0) ? "100": "20");
         xml->writeEndElement();
 
@@ -134,8 +134,8 @@ bool MainWindow::createXML()
     xmlWriter->writeStartDocument();
     xmlWriter->writeStartElement("DATAEX");
 
-    //for(int i=0; i<finder->getPartList().size(); ++i)
-    //    createCommandTag(xmlWriter, finder->getPartList().at(i));
+    for(int i=0; i<finder->getPartList().size(); ++i)
+        createCommandTag(xmlWriter, finder->getPartList().at(i));
 
     xmlWriter->writeEndElement(); // Dataex
     xmlWriter->writeEndDocument();
@@ -246,7 +246,7 @@ void MainWindow::on_fitBtn_clicked()
         if(ui->listWidget->item(i)->checkState()) {
             isChecked = true;
             ui->listWidget->item(i)->setIcon(QIcon(":/images/images/found.png"));
-            // TODO
+            finder->getPartList().at(i)->setMachine(ui->machineryCb->currentText());
         }
         ui->listWidget->item(i)->setCheckState(Qt::Unchecked);
     }

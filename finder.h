@@ -11,9 +11,9 @@
 #include <QMetaType>
 #include <QString>
 #include <QFile>
-#include "partinfo.h"
 #include <memory>
 #include <utility>
+#include "partinfo.h"
 
 class PartInfo;
 
@@ -26,6 +26,8 @@ public:
         QObject(parent), m_schedulePath(schedulePath), m_searchedFolder(searchedFolder) { m_abort = false; qDebug() << m_schedulePath; }
     void abort();
     void showPartList();
+    void sortPartList();
+    QList<PartInfo*> & getPartList() { return m_partList; }
 
 signals:
     void signalProgress(int, QString);
