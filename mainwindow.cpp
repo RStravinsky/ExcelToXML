@@ -16,13 +16,11 @@ MainWindow::~MainWindow()
 void MainWindow::on_excelPathBtn_released()
 {
     QString path = QFileDialog::getOpenFileName(this,tr("Wybierz harmonogram"), QDir::currentPath(), tr("Excel (*.xlsx)"));
-    qDebug() << "Path: " << path << endl;
-    qDebug() << "schedulePath: " << schedulePath << endl;
 
-    if(!path.isEmpty()) {
-        qDebug() << "BYYYDE" << endl;
+    if(!path.isEmpty()) { // TODO - prevent loading existing schedule
         schedulePath = path;
         ui->excelPathLe->setText(path);
+        generatePartList();
     }
 }
 
@@ -54,23 +52,6 @@ void MainWindow::on_convertButton_released()
     }
     else {
 
-//        setEnabled(true);
-//        if(finder!=nullptr) delete finder;
-//        if(finderThread!=nullptr) delete finderThread;
-
-//        finder = new Finder(0, schedulePath, ui->inputLineEdit->text(), ui->outputLineEdit->text(), isWhite, searchCriterion);
-//        finderThread = new QThread;
-//        finder->moveToThread(finderThread);
-
-//        QObject::connect( finder, SIGNAL(finished(bool,QString)), this, SLOT(on_processingFinished(bool,QString)));
-//        QObject::connect( finder, SIGNAL(itemFound(QString,bool)), this, SLOT(on_itemFound(QString,bool)));
-//        QObject::connect( finder, SIGNAL(signalProgress(int,QString) ), this, SLOT( on_setValue(int,QString)));
-//        QObject::connect( finder, SIGNAL(showCopartnerDialog()),this,SLOT(on_showCopartnerDialog()),Qt::BlockingQueuedConnection);
-
-//        QObject::connect( finderThread, SIGNAL(started()), finder, SLOT(findFiles())); // start searching
-//        QObject::connect( finder, SIGNAL(finished(bool,QString)), finderThread, SLOT(quit()),Qt::DirectConnection);
-
-//        finderThread->start();
     }
 }
 
@@ -192,6 +173,26 @@ QStringList MainWindow::getItemsFromFile(QString fileName)
     return list;
 }
 
+bool MainWindow::generatePartList()
+{
+//    if(finder!=nullptr) delete finder;
+//    if(finderThread!=nullptr) delete finderThread;
+
+//    finder = new Finder(0, schedulePath, ui->inputLineEdit->text(), ui->outputLineEdit->text(), isWhite, searchCriterion);
+//    finderThread = new QThread;
+//    finder->moveToThread(finderThread);
+
+//    QObject::connect( finder, SIGNAL(finished(bool,QString)), this, SLOT(on_processingFinished(bool,QString)));
+//    QObject::connect( finder, SIGNAL(itemFound(QString,bool)), this, SLOT(on_itemFound(QString,bool)));
+//    QObject::connect( finder, SIGNAL(signalProgress(int,QString) ), this, SLOT( on_setValue(int,QString)));
+//    QObject::connect( finder, SIGNAL(showCopartnerDialog()),this,SLOT(on_showCopartnerDialog()),Qt::BlockingQueuedConnection);
+
+//    QObject::connect( finderThread, SIGNAL(started()), finder, SLOT(findFiles())); // start searching
+//    QObject::connect( finder, SIGNAL(finished(bool,QString)), finderThread, SLOT(quit()),Qt::DirectConnection);
+
+//    finderThread->start();
+}
+
 void MainWindow::on_excelPathLe_textChanged(const QString &arg1)
 {
     ui->fitBtn->setEnabled(!arg1.isEmpty());
@@ -205,7 +206,6 @@ void MainWindow::on_typeCb_currentIndexChanged(const QString &arg1)
         fillMoreCb(true);
     else if(arg1 == "Maszyna")
         fillMoreCb(false);
-    else {
+    else
         ui->moreCb->clear();
-    }
 }

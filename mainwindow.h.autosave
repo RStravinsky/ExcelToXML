@@ -6,7 +6,6 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QtXml>
-#include <iostream>
 #include <memory>
 #include <QThread>
 

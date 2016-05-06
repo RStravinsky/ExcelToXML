@@ -8,6 +8,7 @@
 #include <QtXml>
 #include <iostream>
 #include <memory>
+#include <QThread>
 
 namespace Ui {
 class MainWindow;
@@ -31,6 +32,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QThread finderThread;
     QXmlStreamWriter xml;
     QString schedulePath;
     void createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml);
@@ -38,6 +40,7 @@ private:
     QXmlStreamWriter * xmlWriter;
     void fillMoreCb(bool isType);
     QStringList getItemsFromFile(QString fileName);
+    bool generatePartList();
 };
 
 #endif // MAINWINDOW_H
