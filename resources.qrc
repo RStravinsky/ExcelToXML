@@ -5,5 +5,7 @@
         <file>images/convert.png</file>
         <file>images/name.png</file>
         <file>images/arrow.png</file>
+        <file>images/found.png</file>
+        <file>images/notfound.png</file>
     </qresource>
 </RCC>

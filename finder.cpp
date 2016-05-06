@@ -13,44 +13,42 @@ void Finder::showPartList()
     }
 }
 
-bool Finder::loadFileList()
+void Finder::loadFileList()
 {
     emit signalProgress(100, "Wczytywanie harmonogramu ...");
-    //QXlsx::Document schedule(QString("\"%1\")").arg(m_schedulePath));
+
     QXlsx::Document schedule(m_schedulePath);
     if(!checkSchedule(schedule)) {
-        emit finished(false, "Harmonogram niepoprawnie sformatowany.");
-        return false;
+        emit finished(false, "Harmonogram niepoprawnie sformatowany."); // failed
+        return;
     }
 
     // find last row of schedule
     int lastRow = 0;
-    if(!rowCount(schedule,lastRow))
-        return false;
-
-    qDebug() << "lastRow: " << lastRow;
+    if(!rowCount(schedule,lastRow)) {
+        emit finished(false, "Harmonogram niepoprawnie sformatowany."); // failed
+        return;
+    }
 
     for (int row = 7; row <= lastRow; ++row)
     {
         bool abort = m_abort;
         if (abort) {
-            emit finished(false);
-            return false;
+            emit finished(false); // break
+            return;
         }
 
-        //if (QXlsx::Cell *cell=schedule.cellAt(row, 3))
-            m_partList.push_back(new PartInfo(schedule.cellAt(row, 3)->value().toString(), schedule.cellAt(row, 8)->value().toString(), 0.0, findFilePath(schedule.cellAt(row, 3)->value().toString()))); // TODO: Add thickness reading !!
-
+        QString dxfPath = findFilePath(schedule.cellAt(row, 3)->value().toString());
+        m_partList.push_back(new PartInfo(schedule.cellAt(row, 3)->value().toString(), schedule.cellAt(row, 8)->value().toString(), 0.0, dxfPath)); // TODO: Add thickness reading !!
+        emit addItemToListWidget(schedule.cellAt(row, 3)->value().toString(), !dxfPath.isEmpty());
         emit signalProgress(int((double(row)/double(lastRow)*100))+1, "Tworzenie listy części ...");
     }
 
-    qDebug() << "Part list size: " << m_partList.size();
-    return true;
+    emit finished(true); // success
 }
 
 bool Finder::rowCount(QXlsx::Document &schedule, int & lastRow)
 {
-
     for (int row = 7; row < 65536; ++row)
     {
         bool abort = m_abort;
@@ -59,38 +57,30 @@ bool Finder::rowCount(QXlsx::Document &schedule, int & lastRow)
             return false;
         }
 
-
-
         if(QXlsx::Cell *cell=schedule.cellAt(row, 6))
         {
-
-
-            if(cell->value() == QVariant("Masa"))
-            {
+            if(cell->value() == QVariant("Masa")) {
                 lastRow = row - 2;
                 break;
             }
         }
-
     }
 
     return true;
 }
 
-
 QString Finder::findFilePath(const QString & filename)
 {
-    emit signalProgress( 100, "Szukanie pliku .dxf ...");
-    QDir dir(QDir::currentPath(), QString("*.dxf"), QDir::NoSort, QDir::Files | QDir::NoSymLinks);
+    QDir dir(m_searchedFolder, QString("*.dxf"), QDir::NoSort, QDir::Files | QDir::NoSymLinks);
     QDirIterator counterIt(dir, QDirIterator::Subdirectories);
     filesCounter = 0;
     while (counterIt.hasNext()) {
+
             bool abort = m_abort;
             if (abort) {
                 emit finished(false);
                 return QString("");
             }
-
 
             if(counterIt.fileName().contains(filename, Qt::CaseInsensitive)) {
                 ++filesCounter;
@@ -98,13 +88,10 @@ QString Finder::findFilePath(const QString & filename)
             }
             counterIt.next();
     }
-    if(filesCounter == 0) {
-        emit finished(false, "Nie znaleziono pliku .dxf.");
+    if(filesCounter == 0)
         return QString("");
-    }
 
     return QString("");
-
 }
 
 bool Finder::checkSchedule(QXlsx::Document &schedule)

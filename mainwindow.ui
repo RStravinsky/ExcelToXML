@@ -512,7 +512,7 @@ background: #A9A9A9 ;
 }</string>
           </property>
           <property name="text">
-           <string>//k1/Produkcja/TECHNOLODZY/BAZA DO TXT/txt</string>
+           <string>//k1/Produkcja/TECHNOLODZY/BAZA_DO_TXT/txt</string>
           </property>
           <property name="readOnly">
            <bool>false</bool>
@@ -791,57 +791,15 @@ background: #A9A9A9 ;
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QComboBox" name="typeCb">
+   <widget class="QComboBox" name="machineryCb">
     <property name="enabled">
      <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>130</x>
       <y>110</y>
-      <width>191</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Calibri</family>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">        QComboBox QListView{
-        border-width: 3px;
-        border-color: darkgray;
-        border-style: solid;
-        color: white;
-        background-color: qlineargradient(x1:0, y1:0, x2:1,y2:0, stop: 1 rgb(140, 140, 140), stop: 0 rgb(150, 150, 150));}</string>
-    </property>
-    <item>
-     <property name="text">
-      <string>Wybierz</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Gatunek</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Maszyna</string>
-     </property>
-    </item>
-   </widget>
-   <widget class="QComboBox" name="moreCb">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>110</y>
-      <width>181</width>
+      <width>261</width>
       <height>31</height>
      </rect>
     </property>
@@ -895,6 +853,80 @@ background: #A9A9A9 ;
     </property>
     <property name="text">
      <string>Przyporządkuj</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="statusLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>390</y>
+      <width>341</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+border: none;
+background: &quot;transparent&quot;;
+color: &quot;gray&quot;;
+font-size: 9pt;
+font-family: &quot;Arial&quot;;
+font-weight: bold;
+}</string>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="excelLbl_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>191</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>135</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>Scieżka przeszukiwania plików *.PDF</string>
+    </property>
+    <property name="toolTipDuration">
+     <number>-1</number>
+    </property>
+    <property name="whatsThis">
+     <string/>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: gray</string>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wybierz maszynę:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
   </widget>

@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    fillMachines();
 }
 
 MainWindow::~MainWindow()
@@ -24,6 +25,12 @@ void MainWindow::on_excelPathBtn_released()
     }
 }
 
+void MainWindow::on_excelPathLe_textChanged(const QString &arg1)
+{
+    ui->fitBtn->setEnabled(!arg1.isEmpty());
+    ui->machineryCb->setEnabled(!arg1.isEmpty());
+}
+
 void MainWindow::on_xmlPathBtn_released()
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Zapisz plik XML"), QDir::currentPath(), tr("XML (*.xml)"));
@@ -32,8 +39,8 @@ void MainWindow::on_xmlPathBtn_released()
 
 void MainWindow::on_searchPathBtn_clicked()
 {
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Wybierz ścieżkę wyszukiwania"), "//k1/Produkcja/TECHNOLODZY/BAZA DO TXT/txt", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    if(!dir.isEmpty()) ui->excelPathLe->setText(dir);
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Wybierz ścieżkę wyszukiwania"), "//k1/Produkcja/TECHNOLODZY/BAZA_DO_TXT/txt", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if(!dir.isEmpty()) ui->searchPathLe->setText(dir);
 }
 
 void MainWindow::on_convertButton_released()
@@ -137,17 +144,72 @@ bool MainWindow::createXML()
     return true;
 }
 
-void MainWindow::fillMoreCb(bool isType)
+bool MainWindow::generatePartList()
+{
+    if(finder!=nullptr) delete finder;
+    if(finderThread!=nullptr) delete finderThread;
+
+    finder = new Finder(0,ui->excelPathLe->text());
+    finderThread = new QThread;
+    finder->moveToThread(finderThread);
+
+    QObject::connect( finder, SIGNAL(finished(bool,QString)), this, SLOT(on_processingFinished(bool,QString)));
+    QObject::connect( finder, SIGNAL(addItemToListWidget(QString,bool)), this, SLOT(on_addItemToListWidget(QString,bool)));
+    QObject::connect( finder, SIGNAL(signalProgress(int,QString) ), this, SLOT(on_setValue(int,QString)));
+
+    QObject::connect( finderThread, SIGNAL(started()), finder, SLOT(loadFileList())); // start searching
+    QObject::connect( finder, SIGNAL(finished(bool,QString)), finderThread, SLOT(quit()),Qt::DirectConnection);
+
+    finderThread->start();
+}
+
+void MainWindow::on_setValue(int value, QString labelText)
+{
+    ui->progressBar->setValue(value);
+    ui->statusLabel->setText(labelText);
+}
+
+void MainWindow::on_addItemToListWidget(QString itemName, bool isFound)
+{
+    QListWidgetItem * item{nullptr};
+    if(isFound) item = new QListWidgetItem(QIcon(":/images/images/found.png"), itemName);
+    else item = new QListWidgetItem(QIcon(":/images/images/notfound.png"), itemName);
+
+    item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+    item->setCheckState(Qt::Unchecked);
+
+    ui->listWidget->insertItem(0,item);
+}
+
+void MainWindow::on_processingFinished(bool isSuccess, QString information)
+{
+    ui->statusLabel->clear();
+    if (isSuccess)
+        ui->progressBar->setValue(100);
+    else {
+        ui->listWidget->clear();
+        ui->progressBar->setValue(0);
+
+        if(!information.isEmpty()) {
+            QMessageBox emptyListMessage;
+            emptyListMessage.setWindowIcon(QIcon(":/images/images/logo.png"));
+            emptyListMessage.setIcon(QMessageBox::Information);
+            emptyListMessage.setText(information);
+            emptyListMessage.setWindowTitle("Informacja");
+            emptyListMessage.exec();
+        }
+    }
+
+//    if(ui->listWidget->count() != 0)
+//        sortListWidget();
+}
+
+void MainWindow::fillMachines()
 {
     QStringList list;
-
-    if(isType)
-        list = getItemsFromFile("TYPES.txt");
-    else
-        list = getItemsFromFile("MACHINERY.txt");
-
-    ui->moreCb->clear();
-    ui->moreCb->addItems(list);
+    list = getItemsFromFile("MACHINERY.txt");
+    ui->machineryCb->clear();
+    ui->machineryCb->addItems(list);
 }
 
 QStringList MainWindow::getItemsFromFile(QString fileName)
@@ -171,43 +233,4 @@ QStringList MainWindow::getItemsFromFile(QString fileName)
     }
 
     return list;
-}
-
-bool MainWindow::generatePartList()
-{
-
-//    if(finder!=nullptr) delete finder;
-//    if(finderThread!=nullptr) delete finderThread;
-
-//    finder = new Finder(0, schedulePath, ui->inputLineEdit->text(), ui->outputLineEdit->text(), isWhite, searchCriterion);
-//    finderThread = new QThread;
-//    finder->moveToThread(finderThread);
-
-//    QObject::connect( finder, SIGNAL(finished(bool,QString)), this, SLOT(on_processingFinished(bool,QString)));
-//    QObject::connect( finder, SIGNAL(itemFound(QString,bool)), this, SLOT(on_itemFound(QString,bool)));
-//    QObject::connect( finder, SIGNAL(signalProgress(int,QString) ), this, SLOT( on_setValue(int,QString)));
-//    QObject::connect( finder, SIGNAL(showCopartnerDialog()),this,SLOT(on_showCopartnerDialog()),Qt::BlockingQueuedConnection);
-
-//    QObject::connect( finderThread, SIGNAL(started()), finder, SLOT(findFiles())); // start searching
-//    QObject::connect( finder, SIGNAL(finished(bool,QString)), finderThread, SLOT(quit()),Qt::DirectConnection);
-
-//    finderThread->start();
-
-}
-
-void MainWindow::on_excelPathLe_textChanged(const QString &arg1)
-{
-    ui->fitBtn->setEnabled(!arg1.isEmpty());
-    ui->moreCb->setEnabled(!arg1.isEmpty());
-    ui->typeCb->setEnabled(!arg1.isEmpty());
-}
-
-void MainWindow::on_typeCb_currentIndexChanged(const QString &arg1)
-{
-    if(arg1 == "Gatunek")
-        fillMoreCb(true);
-    else if(arg1 == "Maszyna")
-        fillMoreCb(false);
-    else
-        ui->moreCb->clear();
 }

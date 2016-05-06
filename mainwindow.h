@@ -10,8 +10,6 @@
 #include <QThread>
 #include "finder.h"
 
-
-
 namespace Ui {
 class MainWindow;
 }
@@ -30,17 +28,20 @@ private slots:
     void on_searchPathBtn_clicked();
     void on_convertButton_released();
     void on_excelPathLe_textChanged(const QString &arg1);
-    void on_typeCb_currentIndexChanged(const QString &arg1);
+    void on_setValue(int value, QString labelText);
+    void on_addItemToListWidget(QString itemName, bool isFound);
+    void on_processingFinished(bool isSuccess, QString information);
 
 private:
     Ui::MainWindow *ui;
-    QThread finderThread;
+    QThread * finderThread{nullptr};
+    Finder * finder{nullptr};
     QXmlStreamWriter xml;
     QString schedulePath;
     void createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml);
     bool createXML();
     QXmlStreamWriter * xmlWriter;
-    void fillMoreCb(bool isType);
+    void fillMachines();
     QStringList getItemsFromFile(QString fileName);
     bool generatePartList();
 };

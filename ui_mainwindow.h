@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.5.1
+** Created by: Qt User Interface Compiler version 5.4.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -54,9 +54,10 @@ public:
     QProgressBar *progressBar;
     QPushButton *convertButton;
     QListWidget *listWidget;
-    QComboBox *typeCb;
-    QComboBox *moreCb;
+    QComboBox *machineryCb;
     QPushButton *fitBtn;
+    QLabel *statusLabel;
+    QLabel *excelLbl_2;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -502,25 +503,14 @@ public:
         listWidget->setStyleSheet(QStringLiteral(""));
         listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         listWidget->setAlternatingRowColors(true);
-        typeCb = new QComboBox(centralWidget);
-        typeCb->setObjectName(QStringLiteral("typeCb"));
-        typeCb->setEnabled(false);
-        typeCb->setGeometry(QRect(10, 110, 191, 31));
+        machineryCb = new QComboBox(centralWidget);
+        machineryCb->setObjectName(QStringLiteral("machineryCb"));
+        machineryCb->setEnabled(false);
+        machineryCb->setGeometry(QRect(130, 110, 261, 31));
         QFont font5;
         font5.setFamily(QStringLiteral("Calibri"));
         font5.setPointSize(12);
-        typeCb->setFont(font5);
-        typeCb->setStyleSheet(QLatin1String("        QComboBox QListView{\n"
-"        border-width: 3px;\n"
-"        border-color: darkgray;\n"
-"        border-style: solid;\n"
-"        color: white;\n"
-"        background-color: qlineargradient(x1:0, y1:0, x2:1,y2:0, stop: 1 rgb(140, 140, 140), stop: 0 rgb(150, 150, 150));}"));
-        moreCb = new QComboBox(centralWidget);
-        moreCb->setObjectName(QStringLiteral("moreCb"));
-        moreCb->setEnabled(false);
-        moreCb->setGeometry(QRect(210, 110, 181, 31));
-        moreCb->setFont(font5);
+        machineryCb->setFont(font5);
         fitBtn = new QPushButton(centralWidget);
         fitBtn->setObjectName(QStringLiteral("fitBtn"));
         fitBtn->setEnabled(false);
@@ -550,6 +540,27 @@ public:
 "background: #A9A9A9 ;\n"
 "}\n"
 ""));
+        statusLabel = new QLabel(centralWidget);
+        statusLabel->setObjectName(QStringLiteral("statusLabel"));
+        statusLabel->setGeometry(QRect(10, 390, 341, 20));
+        statusLabel->setStyleSheet(QLatin1String("QLabel {\n"
+"border: none;\n"
+"background: \"transparent\";\n"
+"color: \"gray\";\n"
+"font-size: 9pt;\n"
+"font-family: \"Arial\";\n"
+"font-weight: bold;\n"
+"}"));
+        excelLbl_2 = new QLabel(centralWidget);
+        excelLbl_2->setObjectName(QStringLiteral("excelLbl_2"));
+        excelLbl_2->setGeometry(QRect(10, 110, 191, 31));
+        sizePolicy.setHeightForWidth(excelLbl_2->sizePolicy().hasHeightForWidth());
+        excelLbl_2->setSizePolicy(sizePolicy);
+        excelLbl_2->setMinimumSize(QSize(135, 0));
+        excelLbl_2->setMaximumSize(QSize(16777215, 16777215));
+        excelLbl_2->setFont(font);
+        excelLbl_2->setToolTipDuration(-1);
+        excelLbl_2->setStyleSheet(QStringLiteral("color: gray"));
         MainWindow->setCentralWidget(centralWidget);
 
         retranslateUi(MainWindow);
@@ -599,19 +610,21 @@ public:
 #ifndef QT_NO_WHATSTHIS
         searchPathLe->setWhatsThis(QString());
 #endif // QT_NO_WHATSTHIS
-        searchPathLe->setText(QApplication::translate("MainWindow", "//k1/Produkcja/TECHNOLODZY/BAZA DO TXT/txt", 0));
+        searchPathLe->setText(QApplication::translate("MainWindow", "//k1/Produkcja/TECHNOLODZY/BAZA_DO_TXT/txt", 0));
         searchPathBtn->setText(QApplication::translate("MainWindow", "...", 0));
         logoLabel->setText(QString());
         nameLabel->setText(QString());
         descriptionLabel->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:8pt; color:#ffffff;\">Konwersja do formatu XML</span></p></body></html>", 0));
         convertButton->setText(QApplication::translate("MainWindow", "Konwertuj", 0));
-        typeCb->clear();
-        typeCb->insertItems(0, QStringList()
-         << QApplication::translate("MainWindow", "Wybierz", 0)
-         << QApplication::translate("MainWindow", "Gatunek", 0)
-         << QApplication::translate("MainWindow", "Maszyna", 0)
-        );
         fitBtn->setText(QApplication::translate("MainWindow", "Przyporz\304\205dkuj", 0));
+        statusLabel->setText(QApplication::translate("MainWindow", "<html><head/><body><p><br/></p></body></html>", 0));
+#ifndef QT_NO_TOOLTIP
+        excelLbl_2->setToolTip(QApplication::translate("MainWindow", "Scie\305\274ka przeszukiwania plik\303\263w *.PDF", 0));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_WHATSTHIS
+        excelLbl_2->setWhatsThis(QString());
+#endif // QT_NO_WHATSTHIS
+        excelLbl_2->setText(QApplication::translate("MainWindow", "<html><head/><body><p>Wybierz maszyn\304\231:</p></body></html>", 0));
     } // retranslateUi
 
 };
