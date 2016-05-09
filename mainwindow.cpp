@@ -11,11 +11,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    if(finder!=nullptr) {
-        finder->abort();
-        finderThread->wait();
-        delete finderThread;
-        delete finder;
+    if(m_finder!=nullptr) {
+        m_finder->abort();
+        m_finderThread->wait();
+        delete m_finderThread;
+        delete m_finder;
     }
 
     delete ui;
@@ -51,7 +51,7 @@ void MainWindow::on_excelPathBtn_released()
         QString path = QFileDialog::getOpenFileName(this,tr("Wybierz harmonogram"), QDir::currentPath(), tr("Excel (*.xlsx)"));
 
         if(!path.isEmpty()) { // TODO - prevent loading existing schedule
-            schedulePath = path;
+            m_schedulePath = path;
             ui->excelPathLe->setText(path);
             generatePartList();
         }
@@ -100,8 +100,8 @@ void MainWindow::on_convertButton_released()
             return;
         }
         else {
-            for(int i=0; i<finder->getPartList().size(); ++i) {
-                if(finder->getPartList().at(i)->getMachine().isEmpty()){
+            for(int i=0; i<m_finder->getPartList().size(); ++i) {
+                if(m_finder->getPartList().at(i)->getMachine().isEmpty()){
                     QMessageBox::information(this, tr("Informacja"), QString("Nie wybrano maszyny dla wszystkich części."));
                     return;
                 }
@@ -115,22 +115,29 @@ void MainWindow::on_convertButton_released()
 
     else {
         ui->statusLabel->setText("Anulowanie ...");
-        finder->abort();
-        finderThread->wait();
-        delete finderThread;
-        delete finder;
-        finder = nullptr;
-        finderThread = nullptr;
+        m_finder->abort();
+        m_finderThread->wait();
+        delete m_finderThread;
+        delete m_finder;
+        m_finder = nullptr;
+        m_finderThread = nullptr;
     }
 }
 
-void MainWindow::createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartInfo * partInfo)
+void MainWindow::createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartInfo * partInfo, int counter)
 {
     QStringList TblRef(QStringList() << "PRODUCTS" << "PRODUCT OPERATIONS" << "IMPORTGEO" << "MANUFACTURING");
     QStringList FldRefFirst(QStringList()  << "PrdRef" << "PrdRef" << "Product");
     QStringList FldRefSecond(QStringList() << "MatRef" << "WrkRef" << "GeometryType");
     QStringList FldRefThird(QStringList()  << "Height" << "OprRef" << "GeometryPath");
-    QStringList FldRefFourth(QStringList()  << "mnOID" << "PrdRefDst" << "Descrip" << "OrdRef" << "ComName" << "RQ" << "DDate");
+    QStringList FldRefFourth(QStringList()  << "MnOID" << "PrdRefDst" << "OrdRef" << "ComName" << "RQ" << "DDate");
+    QStringList ManufacturingFields;
+    ManufacturingFields << m_finder->getOrderNumber() + "_" + QString::number(counter) // mnIDO
+                        << partInfo->getDrawingNumber() // PrdRefDst
+                        << m_finder->getOrderNumber() // OrdRef
+                        << m_finder->getClient() // ComName
+                        << partInfo->getQuantity() // RQ
+                        << m_finder->getDeliveryDate(); // DDate
 
     for(int i=0;i<3;++i) {
 
@@ -167,11 +174,11 @@ void MainWindow::createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartIn
     xml->writeAttribute("Name","Import");
     xml->writeAttribute("TblRef",TblRef[TblRef.size()-1]); // MANUFACTURING
 
-    for(int i=0;i<7;++i) {
+    for(int i=0;i<FldRefFourth.size();++i) {
         xml->writeStartElement("Field");
         xml->writeAttribute("FldRef",FldRefFourth[i]);
-        xml->writeAttribute("FldValue","Indeks_detalu"); // drawing number ALWAYS
-        xml->writeAttribute("FldType", (i==5) ? "30" : (i==6 ? "120" : "20"));
+        xml->writeAttribute("FldValue",ManufacturingFields[i]); // drawing number ALWAYS
+        xml->writeAttribute("FldType", (i==4) ? "30" : (i==5 ? "120" : "20"));
         xml->writeEndElement();
     }
 
@@ -192,8 +199,8 @@ bool MainWindow::createXML()
     xmlWriter->writeStartDocument();
     xmlWriter->writeStartElement("DATAEX");
 
-    for(int i=0; i<finder->getPartList().size(); ++i)
-        createCommandTag(xmlWriter, finder->getPartList().at(i));
+    for(int i=0; i<m_finder->getPartList().size(); ++i)
+        createCommandTag(xmlWriter, m_finder->getPartList().at(i), i);
 
     xmlWriter->writeEndElement(); // Dataex
     xmlWriter->writeEndDocument();
@@ -211,22 +218,22 @@ void MainWindow::generatePartList()
 { 
     setProcessing(true);
 
-    if(finder!=nullptr) delete finder;
-    if(finderThread!=nullptr) delete finderThread;
+    if(m_finder!=nullptr) delete m_finder;
+    if(m_finderThread!=nullptr) delete m_finderThread;
     ui->listWidget->clear();
 
-    finder = new Finder(0,ui->excelPathLe->text(),ui->searchPathLe->text());
-    finderThread = new QThread;
-    finder->moveToThread(finderThread);
+    m_finder = new Finder(0,ui->excelPathLe->text(),ui->searchPathLe->text());
+    m_finderThread = new QThread;
+    m_finder->moveToThread(m_finderThread);
 
-    QObject::connect( finder, SIGNAL(finished(bool,QString)), this, SLOT(on_processingFinished(bool,QString)));
-    QObject::connect( finder, SIGNAL(addItemToListWidget(QString,bool)), this, SLOT(on_addItemToListWidget(QString,bool)));
-    QObject::connect( finder, SIGNAL(signalProgress(int,QString) ), this, SLOT(on_setValue(int,QString)));
+    QObject::connect( m_finder, SIGNAL(finished(bool,QString)), this, SLOT(on_processingFinished(bool,QString)));
+    QObject::connect( m_finder, SIGNAL(addItemToListWidget(QString,bool)), this, SLOT(on_addItemToListWidget(QString,bool)));
+    QObject::connect( m_finder, SIGNAL(signalProgress(int,QString) ), this, SLOT(on_setValue(int,QString)));
 
-    QObject::connect( finderThread, SIGNAL(started()), finder, SLOT(loadFileList())); // start searching
-    QObject::connect( finder, SIGNAL(finished(bool,QString)), finderThread, SLOT(quit()),Qt::DirectConnection);
+    QObject::connect( m_finderThread, SIGNAL(started()), m_finder, SLOT(loadFileList())); // start searching
+    QObject::connect( m_finder, SIGNAL(finished(bool,QString)), m_finderThread, SLOT(quit()),Qt::DirectConnection);
 
-    finderThread->start();
+    m_finderThread->start();
 }
 
 void MainWindow::on_setValue(int value, QString labelText)
@@ -305,7 +312,7 @@ void MainWindow::on_fitBtn_clicked()
         if(ui->listWidget->item(i)->checkState()) {
             isChecked = true;
             ui->listWidget->item(i)->setIcon(QIcon(":/images/images/checked.png"));
-            finder->getPartList().at(i)->setMachine(ui->machineryCb->currentText());
+            m_finder->getPartList().at(i)->setMachine(ui->machineryCb->currentText());
         }
         ui->listWidget->item(i)->setCheckState(Qt::Unchecked);
     }
