@@ -32,6 +32,13 @@ void Finder::loadFileList()
         emit finished(false, "Harmonogram niepoprawnie sformatowany."); // failed
         return;
     }
+    else {
+        m_orderNumber = schedule.cellAt(1,9)->value().toString();
+        m_deliveryDate = schedule.cellAt(3,4)->dateTime().toString("yyyyMMdd");
+        m_client = schedule.cellAt(2,7)->value().toString();
+
+        qDebug() << m_orderNumber << m_deliveryDate << m_client;
+    }
 
     // find last row of schedule
     int lastRow = 0;
@@ -50,7 +57,7 @@ void Finder::loadFileList()
         }
 
         QString dxfPath = findFilePath(schedule.cellAt(row, 3)->value().toString());
-        m_partList.push_back(new PartInfo(schedule.cellAt(row, 3)->value().toString(), schedule.cellAt(row, 8)->value().toString(), 0.0, dxfPath)); // TODO: Add thickness reading !!
+        m_partList.push_back(new PartInfo(schedule.cellAt(row, 3)->value().toString(), schedule.cellAt(row, 8)->value().toString(), 0.0, schedule.cellAt(row, 5)->value().toInt(), dxfPath)); // TODO: Add thickness reading !!
         emit addItemToListWidget(schedule.cellAt(row, 3)->value().toString(), !dxfPath.isEmpty());
         emit signalProgress(int((double(row)/double(lastRow)*100))+1, "Tworzenie listy części ...");
     }

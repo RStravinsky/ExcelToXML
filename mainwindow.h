@@ -35,11 +35,10 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QThread * finderThread{nullptr};
-    Finder * finder{nullptr};
-    QXmlStreamWriter * xmlWriter{nullptr};
-    QString schedulePath;
-    void createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartInfo * partInfo);
+    QThread * m_finderThread{nullptr};
+    Finder * m_finder{nullptr};
+    QString m_schedulePath;
+    void createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartInfo * partInfo, int counter);
     bool createXML();
     void fillMachines();
     QStringList getItemsFromFile(QString fileName);
