@@ -11,18 +11,52 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    if(finder!=nullptr) {
+        finder->abort();
+        finderThread->wait();
+        delete finderThread;
+        delete finder;
+    }
+
     delete ui;
+}
+
+void MainWindow::setProcessing(bool isEnabled)
+{
+    if(isEnabled) {
+        processing = true;
+        ui->searchPathLe->setEnabled(false);
+        ui->excelPathLe->setEnabled(false);
+        ui->xmlPathLe->setEnabled(false);
+        ui->fitBtn->setEnabled(false);
+        ui->machineryCb->setEnabled(false);
+        ui->convertButton->setText("Anuluj");
+        ui->convertButton->setIcon(QIcon(":/images/images/cancel.png"));
+    }
+    else {
+        processing = false;
+        ui->searchPathLe->setEnabled(true);
+        ui->excelPathLe->setEnabled(true);
+        ui->xmlPathLe->setEnabled(true);
+        ui->fitBtn->setEnabled(true);
+        ui->machineryCb->setEnabled(true);
+        ui->convertButton->setText("Konwertuj");
+        ui->convertButton->setIcon(QIcon(":/images/images/convert.png"));
+    }
 }
 
 void MainWindow::on_excelPathBtn_released()
 {
-    QString path = QFileDialog::getOpenFileName(this,tr("Wybierz harmonogram"), QDir::currentPath(), tr("Excel (*.xlsx)"));
+    if(!processing){
+        QString path = QFileDialog::getOpenFileName(this,tr("Wybierz harmonogram"), QDir::currentPath(), tr("Excel (*.xlsx)"));
 
-    if(!path.isEmpty()) { // TODO - prevent loading existing schedule
-        schedulePath = path;
-        ui->excelPathLe->setText(path);
-        generatePartList();
+        if(!path.isEmpty()) { // TODO - prevent loading existing schedule
+            schedulePath = path;
+            ui->excelPathLe->setText(path);
+            generatePartList();
+        }
     }
+    else QMessageBox::information(this,"Informacja","Nie można wybrać ścieżki dostępu podczas wyszukiwania.");
 }
 
 void MainWindow::on_excelPathLe_textChanged(const QString &arg1)
@@ -33,41 +67,65 @@ void MainWindow::on_excelPathLe_textChanged(const QString &arg1)
 
 void MainWindow::on_xmlPathBtn_released()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Zapisz plik XML"), QDir::currentPath(), tr("XML (*.xml)"));
-    if(!fileName.isEmpty()) ui->xmlPathLe->setText(fileName);
+    if(!processing) {
+        QString fileName = QFileDialog::getSaveFileName(this, tr("Zapisz plik XML"), QDir::currentPath(), tr("XML (*.xml)"));
+        if(!fileName.isEmpty()) ui->xmlPathLe->setText(fileName);
+    }
+    else QMessageBox::information(this,"Informacja","Nie można wybrać ścieżki dostępu podczas wyszukiwania.");
 }
 
 void MainWindow::on_searchPathBtn_clicked()
 {
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Wybierz ścieżkę wyszukiwania"), "//k1/Produkcja/TECHNOLODZY/BAZA_DO_TXT/txt", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    if(!dir.isEmpty()) ui->searchPathLe->setText(dir);
+    if(!processing) {
+        QString dir = QFileDialog::getExistingDirectory(this, tr("Wybierz ścieżkę wyszukiwania"), "//k1/Produkcja/TECHNOLODZY/BAZA DO TXT/txt", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+        if(!dir.isEmpty()) ui->searchPathLe->setText(dir);
+    }
+    else QMessageBox::information(this,"Informacja","Nie można wybrać ścieżki dostępu podczas wyszukiwania.");
 }
 
 void MainWindow::on_convertButton_released()
 {
-    QStringList missingPaths;
-    if( ui->searchPathLe->text().isEmpty() || !ui->searchPathLe->text().contains("/"))
-        missingPaths << "ścieżka wyszukiwania";
-    if( ui->xmlPathLe->text().isEmpty() || !ui->xmlPathLe->text().contains("/"))
-        missingPaths << "ścieżka pliku XML";
-    if( ui->excelPathLe->text().isEmpty() || !ui->excelPathLe->text().contains("xlsx"))
-        missingPaths << "ścieżka harmonogramu";
+    if(!processing) {
 
-    if (!missingPaths.isEmpty()) {
-        QMessageBox::information(this, tr("Informacja"), QString("Brakujące ścieżki: "+missingPaths.join(",")+"" + "."));
-        return;
-    }
-    else {
-        if(createXML()){
-            QMessageBox::information(this, tr("Informacja"), QString("Wygenerowano plik XML."));
+        QStringList missingPaths;
+        if( ui->searchPathLe->text().isEmpty() || !ui->searchPathLe->text().contains("/"))
+            missingPaths << "ścieżka wyszukiwania";
+        if( ui->xmlPathLe->text().isEmpty() || !ui->xmlPathLe->text().contains("/"))
+            missingPaths << "ścieżka pliku XML";
+        if( ui->excelPathLe->text().isEmpty() || !ui->excelPathLe->text().contains("xlsx"))
+            missingPaths << "ścieżka harmonogramu";
+
+        if (!missingPaths.isEmpty()) {
+            QMessageBox::information(this, tr("Informacja"), QString("Brakujące ścieżki: "+missingPaths.join(",")+"" + "."));
+            return;
         }
+        else {
+            for(int i=0; i<finder->getPartList().size(); ++i) {
+                if(finder->getPartList().at(i)->getMachine().isEmpty()){
+                    QMessageBox::information(this, tr("Informacja"), QString("Nie wybrano maszyny dla wszystkich części."));
+                    return;
+                }
+            }
+            if(createXML()){
+                QMessageBox::information(this, tr("Informacja"), QString("Wygenerowano plik XML."));
+            }
+        }
+
+    }
+
+    else {
+        ui->statusLabel->setText("Anulowanie ...");
+        finder->abort();
+        finderThread->wait();
+        delete finderThread;
+        delete finder;
+        finder = nullptr;
+        finderThread = nullptr;
     }
 }
 
 void MainWindow::createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartInfo * partInfo)
 {
-    qDebug() << "Drawing number: " << partInfo->getDrawingNumber() << endl;
-
     QStringList TblRef(QStringList() << "PRODUCTS" << "PRODUCT OPERATIONS" << "IMPORTGEO" << "MANUFACTURING");
     QStringList FldRefFirst(QStringList()  << "PrdRef" << "PrdRef" << "Product");
     QStringList FldRefSecond(QStringList() << "MatRef" << "WrkRef" << "GeometryType");
@@ -149,12 +207,15 @@ bool MainWindow::createXML()
     return true;
 }
 
-bool MainWindow::generatePartList()
-{
+void MainWindow::generatePartList()
+{ 
+    setProcessing(true);
+
     if(finder!=nullptr) delete finder;
     if(finderThread!=nullptr) delete finderThread;
+    ui->listWidget->clear();
 
-    finder = new Finder(0,ui->excelPathLe->text());
+    finder = new Finder(0,ui->excelPathLe->text(),ui->searchPathLe->text());
     finderThread = new QThread;
     finder->moveToThread(finderThread);
 
@@ -187,25 +248,21 @@ void MainWindow::on_addItemToListWidget(QString itemName, bool isFound)
 
 void MainWindow::on_processingFinished(bool isSuccess, QString information)
 {
-    ui->statusLabel->clear();
-    if (isSuccess)
-        ui->progressBar->setValue(100);
-    else {
-        ui->listWidget->clear();
-        ui->progressBar->setValue(0);
+    setProcessing(false);
 
+    ui->statusLabel->clear();
+    if (isSuccess) {
+        ui->progressBar->setValue(100);
+        if(ui->listWidget->count() != 0)
+           ui->listWidget->sortItems(Qt::AscendingOrder);
+    }
+    else {
+        ui->progressBar->setValue(0);
+        ui->listWidget->clear();
         if(!information.isEmpty()) {
-            QMessageBox emptyListMessage;
-            emptyListMessage.setWindowIcon(QIcon(":/images/images/logo.png"));
-            emptyListMessage.setIcon(QMessageBox::Information);
-            emptyListMessage.setText(information);
-            emptyListMessage.setWindowTitle("Informacja");
-            emptyListMessage.exec();
+            QMessageBox::information(this,"Informacja",information);
         }
     }
-
-    if(ui->listWidget->count() != 0)
-       ui->listWidget->sortItems(Qt::AscendingOrder);
 }
 
 void MainWindow::fillMachines()
@@ -241,11 +298,13 @@ QStringList MainWindow::getItemsFromFile(QString fileName)
 
 void MainWindow::on_fitBtn_clicked()
 {
+    if(processing) return;
+
     bool isChecked = false;
     for(int i=0;i<ui->listWidget->count();++i) {
         if(ui->listWidget->item(i)->checkState()) {
             isChecked = true;
-            ui->listWidget->item(i)->setIcon(QIcon(":/images/images/found.png"));
+            ui->listWidget->item(i)->setIcon(QIcon(":/images/images/checked.png"));
             finder->getPartList().at(i)->setMachine(ui->machineryCb->currentText());
         }
         ui->listWidget->item(i)->setCheckState(Qt::Unchecked);

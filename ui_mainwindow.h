@@ -610,7 +610,7 @@ public:
 #ifndef QT_NO_WHATSTHIS
         searchPathLe->setWhatsThis(QString());
 #endif // QT_NO_WHATSTHIS
-        searchPathLe->setText(QApplication::translate("MainWindow", "//k1/Produkcja/TECHNOLODZY/BAZA_DO_TXT/txt", 0));
+        searchPathLe->setText(QApplication::translate("MainWindow", "//k1/Produkcja/TECHNOLODZY/BAZA DO TXT/txt", 0));
         searchPathBtn->setText(QApplication::translate("MainWindow", "...", 0));
         logoLabel->setText(QString());
         nameLabel->setText(QString());

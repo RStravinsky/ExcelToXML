@@ -40,6 +40,7 @@ void Finder::loadFileList()
         return;
     }
 
+    emit signalProgress(0, "Tworzenie listy części ...");
     for (int row = 7; row <= lastRow; ++row)
     {
         bool abort = m_abort;
@@ -91,7 +92,7 @@ QString Finder::findFilePath(const QString & filename)
             bool abort = m_abort;
             if (abort) {
                 emit finished(false);
-                return QString("");
+                break;
             }
 
             if(counterIt.fileName().contains(filename, Qt::CaseInsensitive)) {

@@ -26,7 +26,6 @@ private:
     double m_thickness;
     QString m_filePath;
     QString m_machine;
-
 };
 
 #endif // PARTINFO_H

@@ -22,7 +22,7 @@ class Finder : public QObject
     Q_OBJECT
 
 public:
-    explicit Finder(QObject *parent, const QString & schedulePath, const QString & searchedFolder = QString("//K1/Produkcja/TECHNOLODZY/BAZA_DO_TXT/txt/PLA/")) :
+    explicit Finder(QObject *parent, const QString & schedulePath, const QString & searchedFolder = QString("//K1/Produkcja/TECHNOLODZY/BAZA DO TXT/txt/PLA/")) :
         QObject(parent), m_schedulePath(schedulePath), m_searchedFolder(searchedFolder) { m_abort = false; qDebug() << m_schedulePath; }
     void abort();
     void showPartList();

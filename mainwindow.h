@@ -37,14 +37,15 @@ private:
     Ui::MainWindow *ui;
     QThread * finderThread{nullptr};
     Finder * finder{nullptr};
-    QXmlStreamWriter xml;
+    QXmlStreamWriter * xmlWriter{nullptr};
     QString schedulePath;
     void createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartInfo * partInfo);
     bool createXML();
-    QXmlStreamWriter * xmlWriter;
     void fillMachines();
     QStringList getItemsFromFile(QString fileName);
-    bool generatePartList();
+    void generatePartList();
+    void setProcessing(bool isEnabled);
+    bool processing{false};
 };
 
 #endif // MAINWINDOW_H

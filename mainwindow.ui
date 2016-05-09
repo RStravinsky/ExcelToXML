@@ -512,7 +512,7 @@ background: #A9A9A9 ;
 }</string>
           </property>
           <property name="text">
-           <string>//k1/Produkcja/TECHNOLODZY/BAZA_DO_TXT/txt</string>
+           <string>//k1/Produkcja/TECHNOLODZY/BAZA DO TXT/txt</string>
           </property>
           <property name="readOnly">
            <bool>false</bool>
