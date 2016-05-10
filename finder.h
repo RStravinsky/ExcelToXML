@@ -61,7 +61,7 @@ private:
     QStringList m_S235JRG2;
     QStringList m_S355J2G3;
     QStringList m_StainlessSteel;
-
+    int m_lastColumn;
     bool rowCount(QXlsx::Document & schedule, int &lastRow);
     bool checkSchedule(QXlsx::Document & schedule);
     QString findFilePath(const QString & filename);

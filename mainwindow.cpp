@@ -132,6 +132,7 @@ void MainWindow::on_convertButton_released()
             else if (msgBox.clickedButton() == myYesButton)
                 m_isUpload = true;
             else return;
+
 //            for(int i=0; i<m_finder->getPartList().size(); ++i) {
 //                if(m_finder->getPartList().at(i)->getMachine().isEmpty()){
 //                    QMessageBox::information(this, tr("Informacja"), QString("Nie wybrano maszyny dla wszystkich części."));
@@ -175,33 +176,41 @@ void MainWindow::createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartIn
 
         for(int i=0;i<3;++i) {
 
-            xml->writeStartElement("COMMAND");
+            int count = 1;
+            if(i==1)
+                count = partInfo->getMachineList().size();
 
-            xml->writeAttribute("Name","Import");
-            xml->writeAttribute("TblRef",TblRef[i]);
+            do {
+                xml->writeStartElement("COMMAND");
 
-            // first line
-            xml->writeStartElement("Field");
-            xml->writeAttribute("FldRef",FldRefFirst[i]);
-            xml->writeAttribute("FldValue", partInfo->getDrawingNumber()); // drawing number ALWAYS
-            xml->writeAttribute("FldType", "20");
-            xml->writeEndElement();
+                xml->writeAttribute("Name","Import");
+                xml->writeAttribute("TblRef",TblRef[i]);
 
-            // second line
-            xml->writeStartElement("Field");
-            xml->writeAttribute("FldRef",FldRefSecond[i]);
-            xml->writeAttribute("FldValue",(i==0) ? partInfo->getMaterial() : (i==1 ? partInfo->getMachine() : "DXF")); // i=0 - TYPE , i=1 - MACHINE, i=2 = "DXF"
-            xml->writeAttribute("FldType","20");
-            xml->writeEndElement();
+                // first line
+                xml->writeStartElement("Field");
+                xml->writeAttribute("FldRef",FldRefFirst[i]);
+                xml->writeAttribute("FldValue", partInfo->getDrawingNumber()); // drawing number ALWAYS
+                xml->writeAttribute("FldType", "20");
+                xml->writeEndElement();
 
-            // third line
-            xml->writeStartElement("Field");
-            xml->writeAttribute("FldRef",FldRefThird[i]);
-            xml->writeAttribute("FldValue",(i==0) ? QString::number(partInfo->getThickness()) : (i==1 ? "2D Cut" : partInfo->getFilePath())); // i=0 - HEIGHT , i=1 - "2D CUT", i=2 = DXF PATH
-            xml->writeAttribute("FldType",(i==0) ? "100": "20");
-            xml->writeEndElement();
+                // second line
+                xml->writeStartElement("Field");
+                xml->writeAttribute("FldRef",FldRefSecond[i]);
+                qDebug() << "Loop numer " << i << " " << partInfo->getMachineList().at(partInfo->getMachineList().size()-count) << endl;
+                xml->writeAttribute("FldValue",(i==0) ? partInfo->getMaterial() : (i==1 ? partInfo->getMachineList().at(partInfo->getMachineList().size()-count) : "DXF")); // i=0 - TYPE , i=1 - MACHINE, i=2 = "DXF"
+                xml->writeAttribute("FldType","20");
+                xml->writeEndElement();
 
-            xml->writeEndElement(); // Command
+                // third line
+                xml->writeStartElement("Field");
+                xml->writeAttribute("FldRef",FldRefThird[i]);
+                xml->writeAttribute("FldValue",(i==0) ? QString::number(partInfo->getThickness()) : (i==1 ? "2D Cut" : partInfo->getFilePath())); // i=0 - HEIGHT , i=1 - "2D CUT", i=2 = DXF PATH
+                xml->writeAttribute("FldType",(i==0) ? "100": "20");
+                xml->writeEndElement();
+
+                xml->writeEndElement(); // Command
+
+            }while(--count);
         }
 
     }
@@ -347,7 +356,7 @@ void MainWindow::on_fitBtn_clicked()
         if(ui->listWidget->item(i)->checkState()) {
             isChecked = true;
             ui->listWidget->item(i)->setIcon(QIcon(":/images/images/checked.png"));
-            m_finder->getPartList().at(i)->setMachine(ui->machineryCb->currentText());
+            //m_finder->getPartList().at(i)->setMachine(ui->machineryCb->currentText());
         }
         ui->listWidget->item(i)->setCheckState(Qt::Unchecked);
     }

@@ -95,7 +95,7 @@ $(DESTDIR_TARGET): ui_mainwindow.h $(OBJECTS)
 	$(LINKER) $(LFLAGS) -o $(DESTDIR_TARGET) $(OBJECTS)  $(LIBS)
 
 qmake: FORCE
-	@$(QMAKE) -spec win32-g++ CONFIG+=debug -o Makefile.Debug ExcelToXML.pro
+	@$(QMAKE) -spec win32-g++ -o Makefile.Debug ExcelToXML.pro
 
 qmake_all: FORCE
 
@@ -889,6 +889,13 @@ debug/moc_partinfo.cpp: C:/Qt/5.4/mingw491_32/include/QtCore/QObject \
 		C:/Qt/5.4/mingw491_32/include/QtCore/qcontainerfwd.h \
 		C:/Qt/5.4/mingw491_32/include/QtCore/qisenum.h \
 		C:/Qt/5.4/mingw491_32/include/QtCore/qobject_impl.h \
+		C:/Qt/5.4/mingw491_32/include/QtCore/QStringList \
+		C:/Qt/5.4/mingw491_32/include/QtCore/qstringlist.h \
+		C:/Qt/5.4/mingw491_32/include/QtCore/qdatastream.h \
+		C:/Qt/5.4/mingw491_32/include/QtCore/qiodevice.h \
+		C:/Qt/5.4/mingw491_32/include/QtCore/qpair.h \
+		C:/Qt/5.4/mingw491_32/include/QtCore/qregexp.h \
+		C:/Qt/5.4/mingw491_32/include/QtCore/qstringmatcher.h \
 		partinfo.h
 	'C:\Qt\5.4\mingw491_32\bin\moc.exe' $(DEFINES) -D__GNUC__ -DWIN32 -IC:/Qt/5.4/mingw491_32/mkspecs/win32-g++ -ID:/ProjektyQT/ExcelToXML -IC:/Qt/5.4/mingw491_32/include -IC:/Qt/5.4/mingw491_32/include/QtXlsx -IC:/Qt/5.4/mingw491_32/include/QtWidgets -IC:/Qt/5.4/mingw491_32/include/QtGui -IC:/Qt/5.4/mingw491_32/include/QtXml -IC:/Qt/5.4/mingw491_32/include/QtCore partinfo.h -o debug/moc_partinfo.cpp
 
@@ -2077,7 +2084,14 @@ debug/partinfo.o: partinfo.cpp partinfo.h \
 		C:/Qt/5.4/mingw491_32/include/QtCore/qvarlengtharray.h \
 		C:/Qt/5.4/mingw491_32/include/QtCore/qcontainerfwd.h \
 		C:/Qt/5.4/mingw491_32/include/QtCore/qisenum.h \
-		C:/Qt/5.4/mingw491_32/include/QtCore/qobject_impl.h
+		C:/Qt/5.4/mingw491_32/include/QtCore/qobject_impl.h \
+		C:/Qt/5.4/mingw491_32/include/QtCore/QStringList \
+		C:/Qt/5.4/mingw491_32/include/QtCore/qstringlist.h \
+		C:/Qt/5.4/mingw491_32/include/QtCore/qdatastream.h \
+		C:/Qt/5.4/mingw491_32/include/QtCore/qiodevice.h \
+		C:/Qt/5.4/mingw491_32/include/QtCore/qpair.h \
+		C:/Qt/5.4/mingw491_32/include/QtCore/qregexp.h \
+		C:/Qt/5.4/mingw491_32/include/QtCore/qstringmatcher.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/partinfo.o partinfo.cpp
 
 debug/qrc_resources.o: debug/qrc_resources.cpp 
