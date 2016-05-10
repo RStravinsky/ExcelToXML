@@ -89,9 +89,12 @@ void Finder::loadFileList()
         return;
     }
 
+    bool isX;
+
     emit signalProgress(0, "Tworzenie listy części ...");
     for (int row = 7; row <= lastRow; ++row)
     {
+        isX = false;
         bool abort = m_abort;
         if (abort) {
             emit finished(false); // break
@@ -110,7 +113,13 @@ void Finder::loadFileList()
         for(int i = 12; i <= m_lastColumn; ++i) {
             if(schedule.cellAt(row, i)->value().toString().contains("X", Qt::CaseInsensitive)) {
                 m_partList.back()->addMachine(schedule.cellAt(6, i)->value().toString());
+                isX = true;
             }
+        }
+
+        if(!isX) {
+            emit finished(false, "Nie dopasowano maszyny dla rysunku: "+schedule.cellAt(row, 3)->value().toString()+"");
+            return;
         }
 
         emit addItemToListWidget(schedule.cellAt(row, 3)->value().toString(), !dxfPath.isEmpty());
