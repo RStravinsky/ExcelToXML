@@ -13,10 +13,10 @@ public:
     QString getMaterial() { return m_material; }
     double getThickness() { return m_thickness; }
     QString getFilePath() { return m_filePath; }
-    QString getMachine() { return m_machine; }
     int getQuantity() { return m_quantity; }
+    QStringList & getMachineList() { return m_machineList; }
 
-    void setMachine(const QString & machine) { m_machine = machine; }
+    void addMachine(const QString & machine) { m_machineList.push_back(machine); }
 
 signals:
 
@@ -28,7 +28,7 @@ private:
     double m_thickness;
     int m_quantity;
     QString m_filePath;
-    QString m_machine;
+    QStringList m_machineList;
 
 };
 

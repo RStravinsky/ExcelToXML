@@ -47,6 +47,7 @@ private:
     QString m_orderNumber;
     QString m_deliveryDate;
     QString m_client;
+    int lastColumn;
 
     bool rowCount(QXlsx::Document & schedule, int &lastRow);
     bool checkSchedule(QXlsx::Document & schedule);

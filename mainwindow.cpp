@@ -87,29 +87,29 @@ void MainWindow::on_convertButton_released()
 {
     if(!processing) {
 
-        QStringList missingPaths;
-        if( ui->searchPathLe->text().isEmpty() || !ui->searchPathLe->text().contains("/"))
-            missingPaths << "ścieżka wyszukiwania";
-        if( ui->xmlPathLe->text().isEmpty() || !ui->xmlPathLe->text().contains("/"))
-            missingPaths << "ścieżka pliku XML";
-        if( ui->excelPathLe->text().isEmpty() || !ui->excelPathLe->text().contains("xlsx"))
-            missingPaths << "ścieżka harmonogramu";
+//        QStringList missingPaths;
+//        if( ui->searchPathLe->text().isEmpty() || !ui->searchPathLe->text().contains("/"))
+//            missingPaths << "ścieżka wyszukiwania";
+//        if( ui->xmlPathLe->text().isEmpty() || !ui->xmlPathLe->text().contains("/"))
+//            missingPaths << "ścieżka pliku XML";
+//        if( ui->excelPathLe->text().isEmpty() || !ui->excelPathLe->text().contains("xlsx"))
+//            missingPaths << "ścieżka harmonogramu";
 
-        if (!missingPaths.isEmpty()) {
-            QMessageBox::information(this, tr("Informacja"), QString("Brakujące ścieżki: "+missingPaths.join(",")+"" + "."));
-            return;
-        }
-        else {
-            for(int i=0; i<m_finder->getPartList().size(); ++i) {
-                if(m_finder->getPartList().at(i)->getMachine().isEmpty()){
-                    QMessageBox::information(this, tr("Informacja"), QString("Nie wybrano maszyny dla wszystkich części."));
-                    return;
-                }
-            }
+//        if (!missingPaths.isEmpty()) {
+//            QMessageBox::information(this, tr("Informacja"), QString("Brakujące ścieżki: "+missingPaths.join(",")+"" + "."));
+//            return;
+//        }
+//        else {
+//            for(int i=0; i<m_finder->getPartList().size(); ++i) {
+//                if(m_finder->getPartList().at(i)->getMachine().isEmpty()){
+//                    QMessageBox::information(this, tr("Informacja"), QString("Nie wybrano maszyny dla wszystkich części."));
+//                    return;
+//                }
+//            }
             if(createXML()){
                 QMessageBox::information(this, tr("Informacja"), QString("Wygenerowano plik XML."));
             }
-        }
+//        }
 
     }
 
@@ -156,7 +156,7 @@ void MainWindow::createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartIn
         // second line
         xml->writeStartElement("Field");
         xml->writeAttribute("FldRef",FldRefSecond[i]);
-        xml->writeAttribute("FldValue",(i==0) ? partInfo->getMaterial() : (i==1 ? partInfo->getMachine() : "DXF")); // i=0 - TYPE , i=1 - MACHINE, i=2 = "DXF"
+        xml->writeAttribute("FldValue",(i==0) ? partInfo->getMaterial() : (i==1 ? "MASZYNA" : "DXF")); // i=0 - TYPE , i=1 - MACHINE, i=2 = "DXF"
         xml->writeAttribute("FldType","20");
         xml->writeEndElement();
 
@@ -312,7 +312,7 @@ void MainWindow::on_fitBtn_clicked()
         if(ui->listWidget->item(i)->checkState()) {
             isChecked = true;
             ui->listWidget->item(i)->setIcon(QIcon(":/images/images/checked.png"));
-            m_finder->getPartList().at(i)->setMachine(ui->machineryCb->currentText());
+            //m_finder->getPartList().at(i)->setMachine(ui->machineryCb->currentText());
         }
         ui->listWidget->item(i)->setCheckState(Qt::Unchecked);
     }
