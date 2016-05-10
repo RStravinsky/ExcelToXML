@@ -16,19 +16,27 @@ public:
     QString getFilePath() { return m_filePath; }
     int getQuantity() { return m_quantity; }
     QStringList & getMachineList() { return m_machineList; }
-    void addMachine(const QString & machine) { m_machineList.push_back(machine); }
+    QStringList & getTechnologyList() { return m_technologyList; }
+    void addMachine(const QString & machine) {
+        m_machineList.push_back(machine);
+        m_technologyList.push_back(defineTechnology(machine));
+    }
 
 signals:
 
 public slots:
 
 private:
+    static QStringList cut2DList;
+    static QStringList benderList;
     QString m_drawingNumber;
+    QStringList m_technologyList;
     QString m_material;
     double m_thickness;
     int m_quantity;
     QString m_filePath;
     QStringList m_machineList;
+    static QString defineTechnology(QString machine);
 };
 
 #endif // PARTINFO_H
