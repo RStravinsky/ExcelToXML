@@ -24,7 +24,7 @@ MainWindow::~MainWindow()
 void MainWindow::setProcessing(bool isEnabled)
 {
     if(isEnabled) {
-        processing = true;
+        m_processing = true;
         ui->searchPathLe->setEnabled(false);
         ui->excelPathLe->setEnabled(false);
         ui->xmlPathLe->setEnabled(false);
@@ -34,7 +34,7 @@ void MainWindow::setProcessing(bool isEnabled)
         ui->convertButton->setIcon(QIcon(":/images/images/cancel.png"));
     }
     else {
-        processing = false;
+        m_processing = false;
         ui->searchPathLe->setEnabled(true);
         ui->excelPathLe->setEnabled(true);
         ui->xmlPathLe->setEnabled(true);
@@ -47,7 +47,7 @@ void MainWindow::setProcessing(bool isEnabled)
 
 void MainWindow::on_excelPathBtn_released()
 {
-    if(!processing){
+    if(!m_processing){
         QString path = QFileDialog::getOpenFileName(this,tr("Wybierz harmonogram"), QDir::currentPath(), tr("Excel (*.xlsx)"));
 
         if(!path.isEmpty()) { // TODO - prevent loading existing schedule
@@ -67,7 +67,7 @@ void MainWindow::on_excelPathLe_textChanged(const QString &arg1)
 
 void MainWindow::on_xmlPathBtn_released()
 {
-    if(!processing) {
+    if(!m_processing) {
         QString fileName = QFileDialog::getSaveFileName(this, tr("Zapisz plik XML"), QDir::currentPath(), tr("XML (*.xml)"));
         if(!fileName.isEmpty()) ui->xmlPathLe->setText(fileName);
     }
@@ -76,7 +76,7 @@ void MainWindow::on_xmlPathBtn_released()
 
 void MainWindow::on_searchPathBtn_clicked()
 {
-    if(!processing) {
+    if(!m_processing) {
         QString dir = QFileDialog::getExistingDirectory(this, tr("Wybierz ścieżkę wyszukiwania"), "//k1/Produkcja/TECHNOLODZY/BAZA DO TXT/txt", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
         if(!dir.isEmpty()) ui->searchPathLe->setText(dir);
     }
@@ -85,7 +85,7 @@ void MainWindow::on_searchPathBtn_clicked()
 
 void MainWindow::on_convertButton_released()
 {
-    if(!processing) {
+    if(!m_processing) {
 
         QStringList missingPaths;
         if( ui->searchPathLe->text().isEmpty() || !ui->searchPathLe->text().contains("/"))
@@ -100,17 +100,49 @@ void MainWindow::on_convertButton_released()
             return;
         }
         else {
-            for(int i=0; i<m_finder->getPartList().size(); ++i) {
-                if(m_finder->getPartList().at(i)->getMachine().isEmpty()){
-                    QMessageBox::information(this, tr("Informacja"), QString("Nie wybrano maszyny dla wszystkich części."));
-                    return;
-                }
-            }
+            QMessageBox msgBox(QMessageBox::Question, tr("Opcje pliku XML"), tr("<font face=""Calibri"" size=""3"" color=""gray"">Wybierz jedną z opcji:</font>"), QMessageBox::Close);
+            msgBox.setStyleSheet("QMessageBox {background: white;}"
+                                 "QPushButton {"
+                                 "color: gray;"
+                                 "border-radius: 5px;"
+                                 "border: 1px solid lightgray;"
+                                 "background: white;"
+                                 "min-width: 80px;"
+                                 "min-height: 25px"
+                                 "}"
+                                 "QPushButton:hover {"
+                                 "background: lightgray;"
+                                 "color: white;"
+                                 "width: 300px;"
+                                 "}"
+                                 "QPushButton:pressed {"
+                                 "border: 1px solid gray;"
+                                 "background: #A9A9A9 ;"
+                                 "}"
+                                 );
+
+            msgBox.setWindowIcon(QIcon(":/images/images/icon.ico"));
+            QAbstractButton *myYesButton = msgBox.addButton(trUtf8("Wgraj"), QMessageBox::YesRole);
+            QAbstractButton *myNoButton = msgBox.addButton(trUtf8("Dograj"), QMessageBox::NoRole);
+            msgBox.setButtonText(QMessageBox::Close, tr("Zamknij"));
+            msgBox.exec();
+
+            if(msgBox.clickedButton() == myNoButton)
+                m_isUpload = false;
+            else if (msgBox.clickedButton() == myYesButton)
+                m_isUpload = true;
+            else return;
+//            for(int i=0; i<m_finder->getPartList().size(); ++i) {
+//                if(m_finder->getPartList().at(i)->getMachine().isEmpty()){
+//                    QMessageBox::information(this, tr("Informacja"), QString("Nie wybrano maszyny dla wszystkich części."));
+//                    return;
+//                }
+//            }
+
             if(createXML()){
                 QMessageBox::information(this, tr("Informacja"), QString("Wygenerowano plik XML."));
             }
         }
-
     }
 
     else {
@@ -136,44 +168,47 @@ void MainWindow::createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartIn
                         << partInfo->getDrawingNumber() // PrdRefDst
                         << m_finder->getOrderNumber() // OrdRef
                         << m_finder->getClient() // ComName
-                        << partInfo->getQuantity() // RQ
+                        << QString::number(partInfo->getQuantity()) // RQ
                         << m_finder->getDeliveryDate(); // DDate
 
-    for(int i=0;i<3;++i) {
+    if(m_isUpload) { // Upload
 
-        xml->writeStartElement("COMMAND");
+        for(int i=0;i<3;++i) {
 
-        xml->writeAttribute("Name","Import");
-        xml->writeAttribute("TblRef",TblRef[i]);
+            xml->writeStartElement("COMMAND");
 
-        // first line
-        xml->writeStartElement("Field");
-        xml->writeAttribute("FldRef",FldRefFirst[i]);
-        xml->writeAttribute("FldValue", partInfo->getDrawingNumber()); // drawing number ALWAYS
-        xml->writeAttribute("FldType", "20");
-        xml->writeEndElement();
+            xml->writeAttribute("Name","Import");
+            xml->writeAttribute("TblRef",TblRef[i]);
 
-        // second line
-        xml->writeStartElement("Field");
-        xml->writeAttribute("FldRef",FldRefSecond[i]);
-        xml->writeAttribute("FldValue",(i==0) ? partInfo->getMaterial() : (i==1 ? partInfo->getMachine() : "DXF")); // i=0 - TYPE , i=1 - MACHINE, i=2 = "DXF"
-        xml->writeAttribute("FldType","20");
-        xml->writeEndElement();
+            // first line
+            xml->writeStartElement("Field");
+            xml->writeAttribute("FldRef",FldRefFirst[i]);
+            xml->writeAttribute("FldValue", partInfo->getDrawingNumber()); // drawing number ALWAYS
+            xml->writeAttribute("FldType", "20");
+            xml->writeEndElement();
 
-        // third line
-        xml->writeStartElement("Field");
-        xml->writeAttribute("FldRef",FldRefThird[i]);
-        xml->writeAttribute("FldValue",(i==0) ? QString::number(partInfo->getThickness()) : (i==1 ? "2D Cut" : partInfo->getFilePath())); // i=0 - HEIGHT , i=1 - "2D CUT", i=2 = DXF PATH
-        xml->writeAttribute("FldType",(i==0) ? "100": "20");
-        xml->writeEndElement();
+            // second line
+            xml->writeStartElement("Field");
+            xml->writeAttribute("FldRef",FldRefSecond[i]);
+            xml->writeAttribute("FldValue",(i==0) ? partInfo->getMaterial() : (i==1 ? partInfo->getMachine() : "DXF")); // i=0 - TYPE , i=1 - MACHINE, i=2 = "DXF"
+            xml->writeAttribute("FldType","20");
+            xml->writeEndElement();
 
-        xml->writeEndElement(); // Command
+            // third line
+            xml->writeStartElement("Field");
+            xml->writeAttribute("FldRef",FldRefThird[i]);
+            xml->writeAttribute("FldValue",(i==0) ? QString::number(partInfo->getThickness()) : (i==1 ? "2D Cut" : partInfo->getFilePath())); // i=0 - HEIGHT , i=1 - "2D CUT", i=2 = DXF PATH
+            xml->writeAttribute("FldType",(i==0) ? "100": "20");
+            xml->writeEndElement();
+
+            xml->writeEndElement(); // Command
+        }
+
     }
 
     xml->writeStartElement("COMMAND");
     xml->writeAttribute("Name","Import");
     xml->writeAttribute("TblRef",TblRef[TblRef.size()-1]); // MANUFACTURING
-
     for(int i=0;i<FldRefFourth.size();++i) {
         xml->writeStartElement("Field");
         xml->writeAttribute("FldRef",FldRefFourth[i]);
@@ -215,7 +250,7 @@ bool MainWindow::createXML()
 }
 
 void MainWindow::generatePartList()
-{ 
+{
     setProcessing(true);
 
     if(m_finder!=nullptr) delete m_finder;
@@ -305,7 +340,7 @@ QStringList MainWindow::getItemsFromFile(QString fileName)
 
 void MainWindow::on_fitBtn_clicked()
 {
-    if(processing) return;
+    if(m_processing) return;
 
     bool isChecked = false;
     for(int i=0;i<ui->listWidget->count();++i) {
@@ -320,3 +355,4 @@ void MainWindow::on_fitBtn_clicked()
     if(!isChecked)
         QMessageBox::information(this, tr("Informacja"), QString("Nie zaznaczono wierszy."));
 }
+

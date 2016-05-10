@@ -38,13 +38,15 @@ private:
     QThread * m_finderThread{nullptr};
     Finder * m_finder{nullptr};
     QString m_schedulePath;
+    bool m_processing{false};
+    bool m_isUpload;
     void createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartInfo * partInfo, int counter);
     bool createXML();
     void fillMachines();
     QStringList getItemsFromFile(QString fileName);
     void generatePartList();
     void setProcessing(bool isEnabled);
-    bool processing{false};
+
 };
 
 #endif // MAINWINDOW_H

@@ -58,6 +58,26 @@
   subcontrol-origin: margin;
   border-radius: 2px;
 }
+
+QMessageBox QPushButton {
+color: &quot;gray&quot;;
+border-radius: 5px;
+border: 1px solid lightgray;
+background: &quot;white&quot;;
+min-width: 80px;
+min-height: 25px;
+}
+
+QMessageBox QPushButton:hover {
+background: &quot;lightgray&quot;;
+color: &quot;white&quot;;
+width: 300px;
+}
+
+QMessageBox QPushButton:pressed {
+border: 1px solid &quot;gray&quot;;
+background: #A9A9A9 ;
+}
 </string>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -114,7 +134,9 @@ QComboBox QListView{
 	border-style: solid;
 	color: gray;
 	background-color: white;
-}</string>
+}
+
+</string>
    </property>
    <widget class="QFrame" name="bottomFrame">
     <property name="geometry">

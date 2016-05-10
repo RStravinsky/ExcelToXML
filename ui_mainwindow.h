@@ -108,6 +108,26 @@ public:
 "  border-radius: 2px"
                         ";\n"
 "}\n"
+"\n"
+"QMessageBox QPushButton {\n"
+"color: \"gray\";\n"
+"border-radius: 5px;\n"
+"border: 1px solid lightgray;\n"
+"background: \"white\";\n"
+"min-width: 80px;\n"
+"min-height: 25px;\n"
+"}\n"
+"\n"
+"QMessageBox QPushButton:hover {\n"
+"background: \"lightgray\";\n"
+"color: \"white\";\n"
+"width: 300px;\n"
+"}\n"
+"\n"
+"QMessageBox QPushButton:pressed {\n"
+"border: 1px solid \"gray\";\n"
+"background: #A9A9A9 ;\n"
+"}\n"
 ""));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
@@ -164,7 +184,9 @@ public:
 "	color: gray;\n"
 "	backgrou"
                         "nd-color: white;\n"
-"}"));
+"}\n"
+"\n"
+""));
         bottomFrame = new QFrame(centralWidget);
         bottomFrame->setObjectName(QStringLiteral("bottomFrame"));
         bottomFrame->setGeometry(QRect(0, 420, 621, 101));

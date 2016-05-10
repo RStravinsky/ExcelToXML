@@ -20,7 +20,41 @@ void Finder::sortPartList()
     qSort(m_partList.begin(), m_partList.end(),
           [](PartInfo * part1, PartInfo * part2) {
                 return (part1->getDrawingNumber() < part2->getDrawingNumber());
-            });
+    });
+}
+
+QStringList Finder::getItemsFromFile(QString fileName)
+{
+    QStringList list;
+    QFile file(QDir::currentPath() + "\\" + fileName);
+    if ( file.open(QIODevice::ReadWrite) ) {
+        QString line;
+        QTextStream t( &file );
+        do {
+            line = t.readLine();
+            if(!line.isEmpty())
+                list.append(line);
+         } while (!line.isNull());
+        file.close();
+    }
+
+    else {
+        return QStringList();
+    }
+
+    return list;
+}
+
+QString Finder::defineMaterial(QString material)
+{
+    if(std::any_of(m_S235JRG2.begin(),m_S235JRG2.end(), [material](QString elem){ return material.contains(elem);}))
+        return QString("S235JRG2");
+    else if(std::any_of(m_S355J2G3.begin(),m_S355J2G3.end(), [material](QString elem){ return material.contains(elem);}))
+        return QString("S355J2G3");
+    else if(std::any_of(m_StainlessSteel.begin(),m_StainlessSteel.end(), [material](QString elem){ return material.contains(elem);}))
+        return QString("Stainless Steel");
+
+    return QString();
 }
 
 void Finder::loadFileList()
@@ -31,6 +65,13 @@ void Finder::loadFileList()
     if(!checkSchedule(schedule)) {
         emit finished(false, "Harmonogram niepoprawnie sformatowany."); // failed
         return;
+    }
+    else {
+        m_orderNumber = schedule.cellAt(1,9)->value().toString();
+        m_deliveryDate = schedule.cellAt(3,4)->dateTime().toString("yyyyMMdd");
+        m_client = schedule.cellAt(2,7)->value().toString();
+
+        qDebug() << m_orderNumber << m_deliveryDate << m_client;
     }
 
     // find last row of schedule
@@ -50,7 +91,13 @@ void Finder::loadFileList()
         }
 
         QString dxfPath = findFilePath(schedule.cellAt(row, 3)->value().toString());
-        m_partList.push_back(new PartInfo(schedule.cellAt(row, 3)->value().toString(), schedule.cellAt(row, 8)->value().toString(), 0.0, dxfPath)); // TODO: Add thickness reading !!
+        QString material =  defineMaterial(schedule.cellAt(row, 8)->value().toString());
+        if(material.isEmpty()) {
+            emit finished(false,"Nie dopasowano gatunku dla rysunku: "+schedule.cellAt(row, 3)->value().toString()+"");
+            return;
+        }
+
+        m_partList.push_back(new PartInfo(schedule.cellAt(row, 3)->value().toString(), material, 0.0, schedule.cellAt(row, 5)->value().toInt(), dxfPath)); // TODO: Add thickness reading !!
         emit addItemToListWidget(schedule.cellAt(row, 3)->value().toString(), !dxfPath.isEmpty());
         emit signalProgress(int((double(row)/double(lastRow)*100))+1, "Tworzenie listy części ...");
     }
@@ -73,7 +120,7 @@ bool Finder::rowCount(QXlsx::Document &schedule, int & lastRow)
         if(QXlsx::Cell *cell=schedule.cellAt(row, 6))
         {
             if(cell->value() == QVariant("Masa")) {
-                lastRow = row - 2;
+                lastRow = row - 1;
                 break;
             }
         }
