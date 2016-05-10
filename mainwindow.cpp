@@ -204,7 +204,7 @@ void MainWindow::createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartIn
                 // third line
                 xml->writeStartElement("Field");
                 xml->writeAttribute("FldRef",FldRefThird[i]);
-                xml->writeAttribute("FldValue",(i==0) ? QString::number(partInfo->getThickness()) : (i==1 ? "2D Cut" : partInfo->getFilePath())); // i=0 - HEIGHT , i=1 - "2D CUT", i=2 = DXF PATH
+                xml->writeAttribute("FldValue",(i==0) ? QString::number(partInfo->getThickness()) : (i==1 ? partInfo->getTechnologyList().at(partInfo->getTechnologyList().size()-count) : partInfo->getFilePath())); // i=0 - HEIGHT , i=1 - "2D CUT", i=2 = DXF PATH
                 xml->writeAttribute("FldType",(i==0) ? "100": "20");
                 xml->writeEndElement();
 
