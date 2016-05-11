@@ -98,7 +98,7 @@ release/ExcelToXML_resource_res.o: ExcelToXML_resource.rc
 	windres -i ExcelToXML_resource.rc -o release/ExcelToXML_resource_res.o --include-dir=. $(DEFINES)
 
 qmake: FORCE
-	@$(QMAKE) -spec win32-g++ -o Makefile.Release ExcelToXML.pro
+	@$(QMAKE) -spec win32-g++ CONFIG+=debug -o Makefile.Release ExcelToXML.pro
 
 qmake_all: FORCE
 
