@@ -112,6 +112,10 @@ void Finder::loadFileList()
                 m_partList.back()->addMachine(schedule.cellAt(6, i)->value().toString());
             }
         }
+        if(m_partList.back()->getMachineList().isEmpty()){
+            emit finished(false,"Nie dopasowano maszyny dla rysunku: "+schedule.cellAt(row, 3)->value().toString()+"");
+            return;
+        }
 
         emit addItemToListWidget(schedule.cellAt(row, 3)->value().toString(), !dxfPath.isEmpty());
         emit signalProgress(int((double(row)/double(lastRow)*100))+1, "Tworzenie listy części ...");

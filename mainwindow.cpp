@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    fillMachines();
+    ui->listWidget->setFocus();
 }
 
 MainWindow::~MainWindow()
@@ -28,8 +28,7 @@ void MainWindow::setProcessing(bool isEnabled)
         ui->searchPathLe->setEnabled(false);
         ui->excelPathLe->setEnabled(false);
         ui->xmlPathLe->setEnabled(false);
-        ui->fitBtn->setEnabled(false);
-        ui->machineryCb->setEnabled(false);
+
         ui->convertButton->setText("Anuluj");
         ui->convertButton->setIcon(QIcon(":/images/images/cancel.png"));
     }
@@ -38,8 +37,6 @@ void MainWindow::setProcessing(bool isEnabled)
         ui->searchPathLe->setEnabled(true);
         ui->excelPathLe->setEnabled(true);
         ui->xmlPathLe->setEnabled(true);
-        ui->fitBtn->setEnabled(true);
-        ui->machineryCb->setEnabled(true);
         ui->convertButton->setText("Konwertuj");
         ui->convertButton->setIcon(QIcon(":/images/images/convert.png"));
     }
@@ -48,7 +45,7 @@ void MainWindow::setProcessing(bool isEnabled)
 void MainWindow::on_excelPathBtn_released()
 {
     if(!m_processing){
-        QString path = QFileDialog::getOpenFileName(this,tr("Wybierz harmonogram"), QDir::currentPath(), tr("Excel (*.xlsx)"));
+        QString path = QFileDialog::getOpenFileName(this,tr("Wybierz harmonogram"), "//k1/Produkcja/TECHNOLODZY/", tr("Excel (*.xlsx)"));
 
         if(!path.isEmpty()) { // TODO - prevent loading existing schedule
             m_schedulePath = path;
@@ -59,16 +56,10 @@ void MainWindow::on_excelPathBtn_released()
     else QMessageBox::information(this,"Informacja","Nie można wybrać ścieżki dostępu podczas wyszukiwania.");
 }
 
-void MainWindow::on_excelPathLe_textChanged(const QString &arg1)
-{
-    ui->fitBtn->setEnabled(!arg1.isEmpty());
-    ui->machineryCb->setEnabled(!arg1.isEmpty());
-}
-
 void MainWindow::on_xmlPathBtn_released()
 {
     if(!m_processing) {
-        QString fileName = QFileDialog::getSaveFileName(this, tr("Zapisz plik XML"), QDir::currentPath(), tr("XML (*.xml)"));
+        QString fileName = QFileDialog::getSaveFileName(this, tr("Zapisz plik XML"), "//k1/Produkcja/TECHNOLODZY/", tr("XML (*.xml)"));
         if(!fileName.isEmpty()) ui->xmlPathLe->setText(fileName);
     }
     else QMessageBox::information(this,"Informacja","Nie można wybrać ścieżki dostępu podczas wyszukiwania.");
@@ -107,7 +98,7 @@ void MainWindow::on_convertButton_released()
                                  "border-radius: 5px;"
                                  "border: 1px solid lightgray;"
                                  "background: white;"
-                                 "min-width: 80px;"
+                                 "min-width: 120px;"
                                  "min-height: 25px"
                                  "}"
                                  "QPushButton:hover {"
@@ -122,8 +113,8 @@ void MainWindow::on_convertButton_released()
                                  );
 
             msgBox.setWindowIcon(QIcon(":/images/images/icon.ico"));
-            QAbstractButton *myYesButton = msgBox.addButton(trUtf8("Wgraj"), QMessageBox::YesRole);
-            QAbstractButton *myNoButton = msgBox.addButton(trUtf8("Dograj"), QMessageBox::NoRole);
+            QAbstractButton *myYesButton = msgBox.addButton(trUtf8("DXF+Marszruta"), QMessageBox::YesRole);
+            QAbstractButton *myNoButton = msgBox.addButton(trUtf8("Baza Lantek"), QMessageBox::NoRole);
             msgBox.setButtonText(QMessageBox::Close, tr("Zamknij"));
             msgBox.exec();
 
@@ -132,13 +123,6 @@ void MainWindow::on_convertButton_released()
             else if (msgBox.clickedButton() == myYesButton)
                 m_isUpload = true;
             else return;
-
-//            for(int i=0; i<m_finder->getPartList().size(); ++i) {
-//                if(m_finder->getPartList().at(i)->getMachine().isEmpty()){
-//                    QMessageBox::information(this, tr("Informacja"), QString("Nie wybrano maszyny dla wszystkich części."));
-//                    return;
-//                }
-//            }
 
             if(createXML()){
                 QMessageBox::information(this, tr("Informacja"), QString("Wygenerowano plik XML."));
@@ -165,8 +149,9 @@ void MainWindow::createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartIn
     QStringList FldRefThird(QStringList()  << "Height" << "OprRef" << "GeometryPath");
     QStringList FldRefFourth(QStringList()  << "MnOID" << "PrdRefDst" << "OrdRef" << "ComName" << "RQ" << "DDate");
     QStringList ManufacturingFields;
-    ManufacturingFields << m_finder->getOrderNumber() + "_" + QString::number(counter) // mnIDO
-                        << partInfo->getDrawingNumber() // PrdRefDst
+    if(m_isUpload) ManufacturingFields.append(m_finder->getOrderNumber() + "_" + QString::number(counter));// MnIDO
+    else ManufacturingFields.append(m_finder->getOrderNumber() + "_" + QString::number(counter) + "d");// MnIDO
+    ManufacturingFields << partInfo->getDrawingNumber() // PrdRefDst
                         << m_finder->getOrderNumber() // OrdRef
                         << m_finder->getClient() // ComName
                         << QString::number(partInfo->getQuantity()) // RQ
@@ -179,6 +164,8 @@ void MainWindow::createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartIn
             int count = 1;
             if(i==1)
                 count = partInfo->getMachineList().size();
+
+            qDebug() << "Part: " << partInfo->getDrawingNumber() << endl;
 
             do {
                 xml->writeStartElement("COMMAND");
@@ -196,7 +183,7 @@ void MainWindow::createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartIn
                 // second line
                 xml->writeStartElement("Field");
                 xml->writeAttribute("FldRef",FldRefSecond[i]);
-                qDebug() << "Loop numer " << i << " " << partInfo->getMachineList().at(partInfo->getMachineList().size()-count) << endl;
+                qDebug() << partInfo->getMachineList().at(partInfo->getMachineList().size()-count) << " ";
                 xml->writeAttribute("FldValue",(i==0) ? partInfo->getMaterial() : (i==1 ? partInfo->getMachineList().at(partInfo->getMachineList().size()-count) : "DXF")); // i=0 - TYPE , i=1 - MACHINE, i=2 = "DXF"
                 xml->writeAttribute("FldType","20");
                 xml->writeEndElement();
@@ -211,6 +198,8 @@ void MainWindow::createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartIn
                 xml->writeEndElement(); // Command
 
             }while(--count);
+
+            qDebug() << endl;
         }
 
     }
@@ -278,6 +267,7 @@ void MainWindow::generatePartList()
     QObject::connect( m_finder, SIGNAL(finished(bool,QString)), m_finderThread, SLOT(quit()),Qt::DirectConnection);
 
     m_finderThread->start();
+    ui->magnifierLbl->setVisible(false);
 }
 
 void MainWindow::on_setValue(int value, QString labelText)
@@ -289,11 +279,7 @@ void MainWindow::on_setValue(int value, QString labelText)
 void MainWindow::on_addItemToListWidget(QString itemName, bool isFound)
 {
     QListWidgetItem * item = new QListWidgetItem(itemName);
-
-    item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
-    item->setCheckState(Qt::Unchecked);
     if(!isFound) item->setForeground(QBrush(QColor(Qt::red)));
-
     ui->listWidget->insertItem(0,item);
 }
 
@@ -310,18 +296,11 @@ void MainWindow::on_processingFinished(bool isSuccess, QString information)
     else {
         ui->progressBar->setValue(0);
         ui->listWidget->clear();
+        ui->magnifierLbl->setVisible(true);
         if(!information.isEmpty()) {
             QMessageBox::information(this,"Informacja",information);
         }
     }
-}
-
-void MainWindow::fillMachines()
-{
-    QStringList list;
-    list = getItemsFromFile("MACHINERY.txt");
-    ui->machineryCb->clear();
-    ui->machineryCb->addItems(list);
 }
 
 QStringList MainWindow::getItemsFromFile(QString fileName)
@@ -347,21 +326,4 @@ QStringList MainWindow::getItemsFromFile(QString fileName)
     return list;
 }
 
-void MainWindow::on_fitBtn_clicked()
-{
-    if(m_processing) return;
-
-    bool isChecked = false;
-    for(int i=0;i<ui->listWidget->count();++i) {
-        if(ui->listWidget->item(i)->checkState()) {
-            isChecked = true;
-            ui->listWidget->item(i)->setIcon(QIcon(":/images/images/checked.png"));
-            //m_finder->getPartList().at(i)->setMachine(ui->machineryCb->currentText());
-        }
-        ui->listWidget->item(i)->setCheckState(Qt::Unchecked);
-    }
-
-    if(!isChecked)
-        QMessageBox::information(this, tr("Informacja"), QString("Nie zaznaczono wierszy."));
-}
 

@@ -13,7 +13,6 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QComboBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
@@ -35,6 +34,10 @@ public:
     QFrame *bottomFrame;
     QWidget *layoutWidget;
     QVBoxLayout *verticalLayout;
+    QHBoxLayout *outputLayout_3;
+    QLabel *searchLbl;
+    QLineEdit *searchPathLe;
+    QPushButton *searchPathBtn;
     QHBoxLayout *inputLayout;
     QLabel *excelLbl;
     QLineEdit *excelPathLe;
@@ -43,10 +46,6 @@ public:
     QLabel *xmlLbl;
     QLineEdit *xmlPathLe;
     QPushButton *xmlPathBtn;
-    QHBoxLayout *outputLayout_3;
-    QLabel *searchLbl;
-    QLineEdit *searchPathLe;
-    QPushButton *searchPathBtn;
     QFrame *topFrame;
     QLabel *logoLabel;
     QLabel *nameLabel;
@@ -54,10 +53,8 @@ public:
     QProgressBar *progressBar;
     QPushButton *convertButton;
     QListWidget *listWidget;
-    QComboBox *machineryCb;
-    QPushButton *fitBtn;
     QLabel *statusLabel;
-    QLabel *excelLbl_2;
+    QLabel *magnifierLbl;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -209,23 +206,88 @@ public:
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
-        inputLayout = new QHBoxLayout();
-        inputLayout->setSpacing(6);
-        inputLayout->setObjectName(QStringLiteral("inputLayout"));
-        excelLbl = new QLabel(layoutWidget);
-        excelLbl->setObjectName(QStringLiteral("excelLbl"));
+        outputLayout_3 = new QHBoxLayout();
+        outputLayout_3->setSpacing(6);
+        outputLayout_3->setObjectName(QStringLiteral("outputLayout_3"));
+        searchLbl = new QLabel(layoutWidget);
+        searchLbl->setObjectName(QStringLiteral("searchLbl"));
         QSizePolicy sizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(excelLbl->sizePolicy().hasHeightForWidth());
-        excelLbl->setSizePolicy(sizePolicy);
-        excelLbl->setMinimumSize(QSize(135, 0));
-        excelLbl->setMaximumSize(QSize(16777215, 16777215));
+        sizePolicy.setHeightForWidth(searchLbl->sizePolicy().hasHeightForWidth());
+        searchLbl->setSizePolicy(sizePolicy);
+        searchLbl->setMinimumSize(QSize(156, 0));
+        searchLbl->setMaximumSize(QSize(16777215, 16777215));
         QFont font;
         font.setFamily(QStringLiteral("Arial"));
         font.setPointSize(9);
         font.setBold(true);
         font.setWeight(75);
+        searchLbl->setFont(font);
+
+        outputLayout_3->addWidget(searchLbl);
+
+        searchPathLe = new QLineEdit(layoutWidget);
+        searchPathLe->setObjectName(QStringLiteral("searchPathLe"));
+        searchPathLe->setMinimumSize(QSize(0, 25));
+        searchPathLe->setMaximumSize(QSize(16777215, 25));
+        QFont font1;
+        font1.setFamily(QStringLiteral("Arial"));
+        font1.setPointSize(9);
+        searchPathLe->setFont(font1);
+        searchPathLe->setAutoFillBackground(false);
+        searchPathLe->setStyleSheet(QLatin1String("QLineEdit {\n"
+"    font-size: 9pt; \n"
+"    color: \"gray\";\n"
+"    font-family: \"Arial\";\n"
+"	border-radius: 5px;\n"
+"    border-width: 2px solid lightgray;\n"
+"}"));
+        searchPathLe->setReadOnly(false);
+        searchPathLe->setClearButtonEnabled(true);
+
+        outputLayout_3->addWidget(searchPathLe);
+
+        searchPathBtn = new QPushButton(layoutWidget);
+        searchPathBtn->setObjectName(QStringLiteral("searchPathBtn"));
+        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(searchPathBtn->sizePolicy().hasHeightForWidth());
+        searchPathBtn->setSizePolicy(sizePolicy1);
+        searchPathBtn->setMinimumSize(QSize(30, 25));
+        searchPathBtn->setMaximumSize(QSize(30, 25));
+        searchPathBtn->setStyleSheet(QLatin1String("QPushButton {\n"
+"color: \"gray\";\n"
+"border: 1px solid lightgray;\n"
+"border-radius: 5px;\n"
+"background: \"white\";\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background: \"lightgray\";\n"
+"color: \"white\";\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"border: 1px solid \"gray\";\n"
+"background: #A9A9A9 ;\n"
+"}"));
+
+        outputLayout_3->addWidget(searchPathBtn);
+
+
+        verticalLayout->addLayout(outputLayout_3);
+
+        inputLayout = new QHBoxLayout();
+        inputLayout->setSpacing(6);
+        inputLayout->setObjectName(QStringLiteral("inputLayout"));
+        excelLbl = new QLabel(layoutWidget);
+        excelLbl->setObjectName(QStringLiteral("excelLbl"));
+        sizePolicy.setHeightForWidth(excelLbl->sizePolicy().hasHeightForWidth());
+        excelLbl->setSizePolicy(sizePolicy);
+        excelLbl->setMinimumSize(QSize(135, 0));
+        excelLbl->setMaximumSize(QSize(16777215, 16777215));
         excelLbl->setFont(font);
         excelLbl->setToolTipDuration(-1);
 
@@ -235,9 +297,6 @@ public:
         excelPathLe->setObjectName(QStringLiteral("excelPathLe"));
         excelPathLe->setMinimumSize(QSize(0, 25));
         excelPathLe->setMaximumSize(QSize(16777215, 25));
-        QFont font1;
-        font1.setFamily(QStringLiteral("Arial"));
-        font1.setPointSize(9);
         excelPathLe->setFont(font1);
         excelPathLe->setToolTipDuration(-1);
         excelPathLe->setAutoFillBackground(false);
@@ -257,11 +316,11 @@ public:
 
         excelPathBtn = new QPushButton(layoutWidget);
         excelPathBtn->setObjectName(QStringLiteral("excelPathBtn"));
-        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Fixed);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(excelPathBtn->sizePolicy().hasHeightForWidth());
-        excelPathBtn->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(excelPathBtn->sizePolicy().hasHeightForWidth());
+        excelPathBtn->setSizePolicy(sizePolicy2);
         excelPathBtn->setMinimumSize(QSize(30, 25));
         excelPathBtn->setMaximumSize(QSize(30, 25));
         excelPathBtn->setStyleSheet(QLatin1String("QPushButton {\n"
@@ -320,11 +379,8 @@ public:
 
         xmlPathBtn = new QPushButton(layoutWidget);
         xmlPathBtn->setObjectName(QStringLiteral("xmlPathBtn"));
-        QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(xmlPathBtn->sizePolicy().hasHeightForWidth());
-        xmlPathBtn->setSizePolicy(sizePolicy2);
+        sizePolicy1.setHeightForWidth(xmlPathBtn->sizePolicy().hasHeightForWidth());
+        xmlPathBtn->setSizePolicy(sizePolicy1);
         xmlPathBtn->setMinimumSize(QSize(30, 25));
         xmlPathBtn->setMaximumSize(QSize(30, 25));
         xmlPathBtn->setStyleSheet(QLatin1String("QPushButton {\n"
@@ -348,65 +404,6 @@ public:
 
 
         verticalLayout->addLayout(outputLayout);
-
-        outputLayout_3 = new QHBoxLayout();
-        outputLayout_3->setSpacing(6);
-        outputLayout_3->setObjectName(QStringLiteral("outputLayout_3"));
-        searchLbl = new QLabel(layoutWidget);
-        searchLbl->setObjectName(QStringLiteral("searchLbl"));
-        sizePolicy.setHeightForWidth(searchLbl->sizePolicy().hasHeightForWidth());
-        searchLbl->setSizePolicy(sizePolicy);
-        searchLbl->setMinimumSize(QSize(156, 0));
-        searchLbl->setMaximumSize(QSize(16777215, 16777215));
-        searchLbl->setFont(font);
-
-        outputLayout_3->addWidget(searchLbl);
-
-        searchPathLe = new QLineEdit(layoutWidget);
-        searchPathLe->setObjectName(QStringLiteral("searchPathLe"));
-        searchPathLe->setMinimumSize(QSize(0, 25));
-        searchPathLe->setMaximumSize(QSize(16777215, 25));
-        searchPathLe->setFont(font1);
-        searchPathLe->setAutoFillBackground(false);
-        searchPathLe->setStyleSheet(QLatin1String("QLineEdit {\n"
-"    font-size: 9pt; \n"
-"    color: \"gray\";\n"
-"    font-family: \"Arial\";\n"
-"	border-radius: 5px;\n"
-"    border-width: 2px solid lightgray;\n"
-"}"));
-        searchPathLe->setReadOnly(false);
-        searchPathLe->setClearButtonEnabled(true);
-
-        outputLayout_3->addWidget(searchPathLe);
-
-        searchPathBtn = new QPushButton(layoutWidget);
-        searchPathBtn->setObjectName(QStringLiteral("searchPathBtn"));
-        sizePolicy2.setHeightForWidth(searchPathBtn->sizePolicy().hasHeightForWidth());
-        searchPathBtn->setSizePolicy(sizePolicy2);
-        searchPathBtn->setMinimumSize(QSize(30, 25));
-        searchPathBtn->setMaximumSize(QSize(30, 25));
-        searchPathBtn->setStyleSheet(QLatin1String("QPushButton {\n"
-"color: \"gray\";\n"
-"border: 1px solid lightgray;\n"
-"border-radius: 5px;\n"
-"background: \"white\";\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"background: \"lightgray\";\n"
-"color: \"white\";\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"border: 1px solid \"gray\";\n"
-"background: #A9A9A9 ;\n"
-"}"));
-
-        outputLayout_3->addWidget(searchPathBtn);
-
-
-        verticalLayout->addLayout(outputLayout_3);
 
         topFrame = new QFrame(centralWidget);
         topFrame->setObjectName(QStringLiteral("topFrame"));
@@ -521,47 +518,10 @@ public:
         convertButton->setIconSize(QSize(30, 30));
         listWidget = new QListWidget(centralWidget);
         listWidget->setObjectName(QStringLiteral("listWidget"));
-        listWidget->setGeometry(QRect(10, 150, 601, 191));
+        listWidget->setGeometry(QRect(10, 110, 601, 231));
         listWidget->setStyleSheet(QStringLiteral(""));
         listWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         listWidget->setAlternatingRowColors(true);
-        machineryCb = new QComboBox(centralWidget);
-        machineryCb->setObjectName(QStringLiteral("machineryCb"));
-        machineryCb->setEnabled(false);
-        machineryCb->setGeometry(QRect(130, 110, 261, 31));
-        QFont font5;
-        font5.setFamily(QStringLiteral("Calibri"));
-        font5.setPointSize(12);
-        machineryCb->setFont(font5);
-        fitBtn = new QPushButton(centralWidget);
-        fitBtn->setObjectName(QStringLiteral("fitBtn"));
-        fitBtn->setEnabled(false);
-        fitBtn->setGeometry(QRect(400, 110, 211, 31));
-        QFont font6;
-        font6.setFamily(QStringLiteral("Calibri"));
-        font6.setPointSize(12);
-        font6.setBold(false);
-        font6.setWeight(50);
-        fitBtn->setFont(font6);
-        fitBtn->setStyleSheet(QLatin1String("QPushButton {\n"
-"color: \"gray\";\n"
-"border-radius: 5px;\n"
-"border: 1px solid lightgray;\n"
-"background: \"white\";\n"
-"min-width: 80px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"background: \"lightgray\";\n"
-"color: \"white\";\n"
-"width: 300px;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"border: 1px solid \"gray\";\n"
-"background: #A9A9A9 ;\n"
-"}\n"
-""));
         statusLabel = new QLabel(centralWidget);
         statusLabel->setObjectName(QStringLiteral("statusLabel"));
         statusLabel->setGeometry(QRect(10, 390, 341, 20));
@@ -573,16 +533,12 @@ public:
 "font-family: \"Arial\";\n"
 "font-weight: bold;\n"
 "}"));
-        excelLbl_2 = new QLabel(centralWidget);
-        excelLbl_2->setObjectName(QStringLiteral("excelLbl_2"));
-        excelLbl_2->setGeometry(QRect(10, 110, 191, 31));
-        sizePolicy.setHeightForWidth(excelLbl_2->sizePolicy().hasHeightForWidth());
-        excelLbl_2->setSizePolicy(sizePolicy);
-        excelLbl_2->setMinimumSize(QSize(135, 0));
-        excelLbl_2->setMaximumSize(QSize(16777215, 16777215));
-        excelLbl_2->setFont(font);
-        excelLbl_2->setToolTipDuration(-1);
-        excelLbl_2->setStyleSheet(QStringLiteral("color: gray"));
+        magnifierLbl = new QLabel(centralWidget);
+        magnifierLbl->setObjectName(QStringLiteral("magnifierLbl"));
+        magnifierLbl->setGeometry(QRect(230, 170, 131, 121));
+        magnifierLbl->setStyleSheet(QStringLiteral(""));
+        magnifierLbl->setPixmap(QPixmap(QString::fromUtf8(":/images/images/magnifier.png")));
+        magnifierLbl->setScaledContents(true);
         MainWindow->setCentralWidget(centralWidget);
 
         retranslateUi(MainWindow);
@@ -593,6 +549,18 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "XML Converter", 0));
+#ifndef QT_NO_TOOLTIP
+        searchLbl->setToolTip(QApplication::translate("MainWindow", "\305\232cie\305\274ka zapisu wyszukanych plik\303\263w *.PDF", 0));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_WHATSTHIS
+        searchLbl->setWhatsThis(QString());
+#endif // QT_NO_WHATSTHIS
+        searchLbl->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" color:#ffffff;\">\305\232cie\305\274ka wyszukiwania:</span></p></body></html>", 0));
+#ifndef QT_NO_WHATSTHIS
+        searchPathLe->setWhatsThis(QString());
+#endif // QT_NO_WHATSTHIS
+        searchPathLe->setText(QString());
+        searchPathBtn->setText(QApplication::translate("MainWindow", "...", 0));
 #ifndef QT_NO_TOOLTIP
         excelLbl->setToolTip(QApplication::translate("MainWindow", "Scie\305\274ka przeszukiwania plik\303\263w *.PDF", 0));
 #endif // QT_NO_TOOLTIP
@@ -622,31 +590,12 @@ public:
         xmlPathLe->setWhatsThis(QString());
 #endif // QT_NO_WHATSTHIS
         xmlPathBtn->setText(QApplication::translate("MainWindow", "...", 0));
-#ifndef QT_NO_TOOLTIP
-        searchLbl->setToolTip(QApplication::translate("MainWindow", "\305\232cie\305\274ka zapisu wyszukanych plik\303\263w *.PDF", 0));
-#endif // QT_NO_TOOLTIP
-#ifndef QT_NO_WHATSTHIS
-        searchLbl->setWhatsThis(QString());
-#endif // QT_NO_WHATSTHIS
-        searchLbl->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" color:#ffffff;\">\305\232cie\305\274ka wyszukiwania:</span></p></body></html>", 0));
-#ifndef QT_NO_WHATSTHIS
-        searchPathLe->setWhatsThis(QString());
-#endif // QT_NO_WHATSTHIS
-        searchPathLe->setText(QApplication::translate("MainWindow", "//k1/Produkcja/TECHNOLODZY/BAZA DO TXT/txt", 0));
-        searchPathBtn->setText(QApplication::translate("MainWindow", "...", 0));
         logoLabel->setText(QString());
         nameLabel->setText(QString());
         descriptionLabel->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:8pt; color:#ffffff;\">Konwersja do formatu XML</span></p></body></html>", 0));
         convertButton->setText(QApplication::translate("MainWindow", "Konwertuj", 0));
-        fitBtn->setText(QApplication::translate("MainWindow", "Przyporz\304\205dkuj", 0));
         statusLabel->setText(QApplication::translate("MainWindow", "<html><head/><body><p><br/></p></body></html>", 0));
-#ifndef QT_NO_TOOLTIP
-        excelLbl_2->setToolTip(QApplication::translate("MainWindow", "Scie\305\274ka przeszukiwania plik\303\263w *.PDF", 0));
-#endif // QT_NO_TOOLTIP
-#ifndef QT_NO_WHATSTHIS
-        excelLbl_2->setWhatsThis(QString());
-#endif // QT_NO_WHATSTHIS
-        excelLbl_2->setText(QApplication::translate("MainWindow", "<html><head/><body><p>Wybierz maszyn\304\231:</p></body></html>", 0));
+        magnifierLbl->setText(QString());
     } // retranslateUi
 
 };

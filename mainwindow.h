@@ -27,11 +27,9 @@ private slots:
     void on_xmlPathBtn_released();
     void on_searchPathBtn_clicked();
     void on_convertButton_released();
-    void on_excelPathLe_textChanged(const QString &arg1);
     void on_setValue(int value, QString labelText);
     void on_addItemToListWidget(QString itemName, bool isFound);
     void on_processingFinished(bool isSuccess, QString information);
-    void on_fitBtn_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -42,7 +40,6 @@ private:
     bool m_isUpload;
     void createCommandTag(std::unique_ptr<QXmlStreamWriter> &xml, PartInfo * partInfo, int counter);
     bool createXML();
-    void fillMachines();
     QStringList getItemsFromFile(QString fileName);
     void generatePartList();
     void setProcessing(bool isEnabled);

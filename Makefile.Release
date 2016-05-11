@@ -17,13 +17,13 @@ CXXFLAGS      = -pipe -fno-keep-inline-dllexport -O2 -std=c++0x -frtti -Wall -We
 INCPATH       = -I'.' -I'C:/Qt/5.4/mingw491_32/include' -I'C:/Qt/5.4/mingw491_32/include/QtXlsx' -I'C:/Qt/5.4/mingw491_32/include/QtWidgets' -I'C:/Qt/5.4/mingw491_32/include/QtGui' -I'C:/Qt/5.4/mingw491_32/include/QtXml' -I'C:/Qt/5.4/mingw491_32/include/QtCore' -I'release' -I'.' -I'C:/Qt/5.4/mingw491_32/mkspecs/win32-g++' 
 LINKER      =        g++
 LFLAGS        =        -Wl,-s -Wl,-subsystem,windows -mthreads
-LIBS        =        -lglu32 -lopengl32 -lgdi32 -luser32 -lmingw32 -LC:/Qt/5.4/mingw491_32/lib -lqtmain -LC:\mingw491\mingw32\lib -LC:\Utils\icu32_53_1_mingw482\lib -LC:\utils\postgresql\pgsql\lib -LC:\utils\mysql\mysql\lib -LC:\opensll\lib -lshell32 -LC:\Qt\5.4\mingw491_32/lib -lQt5Xlsx -lQt5Widgets -lQt5Gui -lQt5Xml -lQt5Core 
+LIBS        =        -lglu32 -lopengl32 -lgdi32 -luser32 -lmingw32 -LC:/Qt/5.4/mingw491_32/lib -lqtmain -LC:\mingw491\mingw32\lib -LC:\Utils\icu32_53_1_mingw482\lib -LC:\utils\postgresql\pgsql\lib -LC:\utils\mysql\mysql\lib -LC:\opensll\lib -lshell32 -LC:\Qt\5.4\mingw491_32/lib -lQt5Xlsx -lQt5Widgets -lQt5Gui -lQt5Xml -lQt5Core release/ExcelToXML_resource_res.o 
 QMAKE         = C:/Qt/5.4/mingw491_32/bin/qmake.exe
 IDC           = idc
 IDL           = midl
 ZIP           = 
 DEF_FILE      = 
-RES_FILE      = 
+RES_FILE      = release/ExcelToXML_resource_res.o
 COPY          = cp -f
 SED           = sed
 COPY_FILE     = cp -f
@@ -91,8 +91,11 @@ DESTDIR_TARGET = release/ExcelToXML.exe
 first: all
 all: Makefile.Release  $(DESTDIR_TARGET)
 
-$(DESTDIR_TARGET): ui_mainwindow.h $(OBJECTS) 
+$(DESTDIR_TARGET): ui_mainwindow.h $(OBJECTS) release/ExcelToXML_resource_res.o
 	$(LINKER) $(LFLAGS) -o $(DESTDIR_TARGET) $(OBJECTS)  $(LIBS)
+
+release/ExcelToXML_resource_res.o: ExcelToXML_resource.rc
+	windres -i ExcelToXML_resource.rc -o release/ExcelToXML_resource_res.o --include-dir=. $(DEFINES)
 
 qmake: FORCE
 	@$(QMAKE) -spec win32-g++ -o Makefile.Release ExcelToXML.pro
@@ -104,6 +107,7 @@ dist:
 
 clean: compiler_clean 
 	-$(DEL_FILE) release/main.o release/mainwindow.o release/finder.o release/partinfo.o release/qrc_resources.o release/moc_mainwindow.o release/moc_finder.o release/moc_partinfo.o
+	-$(DEL_FILE) release/ExcelToXML_resource_res.o
 
 distclean: clean 
 	-$(DEL_FILE) $(DESTDIR_TARGET)
@@ -1653,18 +1657,8 @@ release/mainwindow.o: mainwindow.cpp mainwindow.h \
 		C:/Qt/5.4/mingw491_32/include/QtWidgets/qdesktopwidget.h \
 		C:/Qt/5.4/mingw491_32/include/QtWidgets/QButtonGroup \
 		C:/Qt/5.4/mingw491_32/include/QtWidgets/qbuttongroup.h \
-		C:/Qt/5.4/mingw491_32/include/QtWidgets/QComboBox \
-		C:/Qt/5.4/mingw491_32/include/QtWidgets/qcombobox.h \
-		C:/Qt/5.4/mingw491_32/include/QtWidgets/qabstractitemdelegate.h \
-		C:/Qt/5.4/mingw491_32/include/QtWidgets/qstyleoption.h \
-		C:/Qt/5.4/mingw491_32/include/QtWidgets/qabstractspinbox.h \
-		C:/Qt/5.4/mingw491_32/include/QtWidgets/qslider.h \
-		C:/Qt/5.4/mingw491_32/include/QtWidgets/qabstractslider.h \
-		C:/Qt/5.4/mingw491_32/include/QtWidgets/qstyle.h \
-		C:/Qt/5.4/mingw491_32/include/QtWidgets/qtabbar.h \
-		C:/Qt/5.4/mingw491_32/include/QtWidgets/qrubberband.h \
-		C:/Qt/5.4/mingw491_32/include/QtWidgets/qframe.h \
 		C:/Qt/5.4/mingw491_32/include/QtWidgets/QFrame \
+		C:/Qt/5.4/mingw491_32/include/QtWidgets/qframe.h \
 		C:/Qt/5.4/mingw491_32/include/QtWidgets/QHBoxLayout \
 		C:/Qt/5.4/mingw491_32/include/QtWidgets/qboxlayout.h \
 		C:/Qt/5.4/mingw491_32/include/QtWidgets/qlayout.h \
@@ -1674,6 +1668,14 @@ release/mainwindow.o: mainwindow.cpp mainwindow.h \
 		C:/Qt/5.4/mingw491_32/include/QtWidgets/qheaderview.h \
 		C:/Qt/5.4/mingw491_32/include/QtWidgets/qabstractitemview.h \
 		C:/Qt/5.4/mingw491_32/include/QtWidgets/qabstractscrollarea.h \
+		C:/Qt/5.4/mingw491_32/include/QtWidgets/qabstractitemdelegate.h \
+		C:/Qt/5.4/mingw491_32/include/QtWidgets/qstyleoption.h \
+		C:/Qt/5.4/mingw491_32/include/QtWidgets/qabstractspinbox.h \
+		C:/Qt/5.4/mingw491_32/include/QtWidgets/qslider.h \
+		C:/Qt/5.4/mingw491_32/include/QtWidgets/qabstractslider.h \
+		C:/Qt/5.4/mingw491_32/include/QtWidgets/qstyle.h \
+		C:/Qt/5.4/mingw491_32/include/QtWidgets/qtabbar.h \
+		C:/Qt/5.4/mingw491_32/include/QtWidgets/qrubberband.h \
 		C:/Qt/5.4/mingw491_32/include/QtWidgets/QLabel \
 		C:/Qt/5.4/mingw491_32/include/QtWidgets/qlabel.h \
 		C:/Qt/5.4/mingw491_32/include/QtWidgets/QLineEdit \

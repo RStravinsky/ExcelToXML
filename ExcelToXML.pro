@@ -26,3 +26,6 @@ FORMS    += mainwindow.ui
 
 RESOURCES += \
     resources.qrc
+
+
+RC_ICONS = images\icon.ico

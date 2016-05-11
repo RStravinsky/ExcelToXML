@@ -178,6 +178,138 @@ border-top-left-radius:10px;
        <number>0</number>
       </property>
       <item>
+       <layout class="QHBoxLayout" name="outputLayout_3">
+        <item>
+         <widget class="QLabel" name="searchLbl">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>156</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>9</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Ścieżka zapisu wyszukanych plików *.PDF</string>
+          </property>
+          <property name="whatsThis">
+           <string/>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Ścieżka wyszukiwania:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="searchPathLe">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+          <property name="whatsThis">
+           <string/>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLineEdit {
+    font-size: 9pt; 
+    color: &quot;gray&quot;;
+    font-family: &quot;Arial&quot;;
+	border-radius: 5px;
+    border-width: 2px solid lightgray;
+}</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="readOnly">
+           <bool>false</bool>
+          </property>
+          <property name="clearButtonEnabled">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="searchPathBtn">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>30</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>30</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+color: &quot;gray&quot;;
+border: 1px solid lightgray;
+border-radius: 5px;
+background: &quot;white&quot;;
+}
+
+QPushButton:hover {
+background: &quot;lightgray&quot;;
+color: &quot;white&quot;;
+}
+
+QPushButton:pressed {
+border: 1px solid &quot;gray&quot;;
+background: #A9A9A9 ;
+}</string>
+          </property>
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="inputLayout">
         <item>
          <widget class="QLabel" name="excelLbl">
@@ -457,138 +589,6 @@ background: #A9A9A9 ;
         </item>
        </layout>
       </item>
-      <item>
-       <layout class="QHBoxLayout" name="outputLayout_3">
-        <item>
-         <widget class="QLabel" name="searchLbl">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>156</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>Arial</family>
-            <pointsize>9</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>Ścieżka zapisu wyszukanych plików *.PDF</string>
-          </property>
-          <property name="whatsThis">
-           <string/>
-          </property>
-          <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Ścieżka wyszukiwania:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="searchPathLe">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>25</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>25</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>Arial</family>
-            <pointsize>9</pointsize>
-           </font>
-          </property>
-          <property name="whatsThis">
-           <string/>
-          </property>
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QLineEdit {
-    font-size: 9pt; 
-    color: &quot;gray&quot;;
-    font-family: &quot;Arial&quot;;
-	border-radius: 5px;
-    border-width: 2px solid lightgray;
-}</string>
-          </property>
-          <property name="text">
-           <string>//k1/Produkcja/TECHNOLODZY/BAZA DO TXT/txt</string>
-          </property>
-          <property name="readOnly">
-           <bool>false</bool>
-          </property>
-          <property name="clearButtonEnabled">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="searchPathBtn">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>30</width>
-            <height>25</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>30</width>
-            <height>25</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QPushButton {
-color: &quot;gray&quot;;
-border: 1px solid lightgray;
-border-radius: 5px;
-background: &quot;white&quot;;
-}
-
-QPushButton:hover {
-background: &quot;lightgray&quot;;
-color: &quot;white&quot;;
-}
-
-QPushButton:pressed {
-border: 1px solid &quot;gray&quot;;
-background: #A9A9A9 ;
-}</string>
-          </property>
-          <property name="text">
-           <string>...</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
      </layout>
     </widget>
    </widget>
@@ -798,9 +798,9 @@ background: #A9A9A9 ;
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>150</y>
+      <y>110</y>
       <width>601</width>
-      <height>191</height>
+      <height>231</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -811,70 +811,6 @@ background: #A9A9A9 ;
     </property>
     <property name="alternatingRowColors">
      <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="machineryCb">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>110</y>
-      <width>261</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Calibri</family>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="fitBtn">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>400</x>
-      <y>110</y>
-      <width>211</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Calibri</family>
-      <pointsize>12</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton {
-color: &quot;gray&quot;;
-border-radius: 5px;
-border: 1px solid lightgray;
-background: &quot;white&quot;;
-min-width: 80px;
-}
-
-QPushButton:hover {
-background: &quot;lightgray&quot;;
-color: &quot;white&quot;;
-width: 300px;
-}
-
-QPushButton:pressed {
-border: 1px solid &quot;gray&quot;;
-background: #A9A9A9 ;
-}
-</string>
-    </property>
-    <property name="text">
-     <string>Przyporządkuj</string>
     </property>
    </widget>
    <widget class="QLabel" name="statusLabel">
@@ -900,55 +836,26 @@ font-weight: bold;
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLabel" name="excelLbl_2">
+   <widget class="QLabel" name="magnifierLbl">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>110</y>
-      <width>191</width>
-      <height>31</height>
+      <x>230</x>
+      <y>170</y>
+      <width>131</width>
+      <height>121</height>
      </rect>
     </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>135</width>
-      <height>0</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>16777215</width>
-      <height>16777215</height>
-     </size>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>9</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="toolTip">
-     <string>Scieżka przeszukiwania plików *.PDF</string>
-    </property>
-    <property name="toolTipDuration">
-     <number>-1</number>
-    </property>
-    <property name="whatsThis">
-     <string/>
-    </property>
     <property name="styleSheet">
-     <string notr="true">color: gray</string>
+     <string notr="true"/>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wybierz maszynę:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="resources.qrc">:/images/images/magnifier.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>
