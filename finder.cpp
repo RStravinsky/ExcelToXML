@@ -89,18 +89,20 @@ void Finder::loadFileList()
         return;
     }
 
-    bool isX;
-
     emit signalProgress(0, "Tworzenie listy części ...");
     for (int row = 7; row <= lastRow; ++row)
     {
-        isX = false;
         bool abort = m_abort;
         if (abort) {
             emit finished(false); // break
             return;
         }
 
+        QString drawingNumber = schedule.cellAt(row, 3)->value().toString();
+        if(drawingNumber.isEmpty()){
+            emit finished(false,"Brak nazwy rysunku.");
+            return;
+        }
         QString dxfPath = findFilePath(schedule.cellAt(row, 3)->value().toString());
         QString material =  defineMaterial(schedule.cellAt(row, 8)->value().toString());
         if(material.isEmpty()) {
@@ -108,21 +110,16 @@ void Finder::loadFileList()
             return;
         }
 
-        m_partList.push_back(new PartInfo(schedule.cellAt(row, 3)->value().toString(), material, schedule.cellAt(row, 11)->value().toDouble(), schedule.cellAt(row, 5)->value().toInt(), dxfPath)); // TODO: Add thickness reading !!
+        m_partList.push_back(new PartInfo(drawingNumber, material, schedule.cellAt(row, 11)->value().toDouble(), schedule.cellAt(row, 5)->value().toInt(), dxfPath)); // TODO: Add thickness reading !!
 
         for(int i = 12; i <= m_lastColumn; ++i) {
             if(schedule.cellAt(row, i)->value().toString().contains("X", Qt::CaseInsensitive)) {
                 m_partList.back()->addMachine(schedule.cellAt(6, i)->value().toString());
-                isX = true;
             }
         }
+
         if(m_partList.back()->getMachineList().isEmpty()){
             emit finished(false,"Nie dopasowano maszyny dla rysunku: "+schedule.cellAt(row, 3)->value().toString()+"");
-            return;
-        }
-
-        if(!isX) {
-            emit finished(false, "Nie dopasowano maszyny dla rysunku: "+schedule.cellAt(row, 3)->value().toString()+"");
             return;
         }
 
